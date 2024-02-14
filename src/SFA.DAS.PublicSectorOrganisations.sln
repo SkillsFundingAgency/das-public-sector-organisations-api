@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS. PublicSectorOrganisations.Database", "SFA.DAS. PublicSectorOrganisations.Database\SFA.DAS. PublicSectorOrganisations.Database.csproj", "{6416F00F-96D5-4393-840E-B8083A083C17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Database", "SFA.DAS.PublicSectorOrganisations.Database\SFA.DAS.PublicSectorOrganisations.Database.csproj", "{6416F00F-96D5-4393-840E-B8083A083C17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Api", "SFA.DAS. PublicSectorOrganisations.Api\SFA.DAS.PublicSectorOrganisations.Api.csproj", "{C174E842-7686-4A93-9EEB-1E4348EFC0AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Api", "SFA.DAS.PublicSectorOrganisations.Api\SFA.DAS.PublicSectorOrganisations.Api.csproj", "{C174E842-7686-4A93-9EEB-1E4348EFC0AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Domain", "SFA.DAS. PublicSectorOrganisations.Domain\SFA.DAS.PublicSectorOrganisations.Domain.csproj", "{D525DB2B-95DB-4E53-86DE-6B0B7E4B94D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Domain", "SFA.DAS.PublicSectorOrganisations.Domain\SFA.DAS.PublicSectorOrganisations.Domain.csproj", "{D525DB2B-95DB-4E53-86DE-6B0B7E4B94D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Data", "SFA.DAS. PublicSectorOrganisations.Data\SFA.DAS.PublicSectorOrganisations.Data.csproj", "{CF4B76C5-E967-4DB2-BBF6-D41167251506}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Data", "SFA.DAS.PublicSectorOrganisations.Data\SFA.DAS.PublicSectorOrganisations.Data.csproj", "{CF4B76C5-E967-4DB2-BBF6-D41167251506}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

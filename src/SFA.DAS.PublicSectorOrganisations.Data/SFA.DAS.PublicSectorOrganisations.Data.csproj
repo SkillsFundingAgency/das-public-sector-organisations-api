@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SFA.DAS. PublicSectorOrganisations.Domain\SFA.DAS.PublicSectorOrganisations.Domain.csproj" />
+      <ProjectReference Include="..\SFA.DAS.PublicSectorOrganisations.Domain\SFA.DAS.PublicSectorOrganisations.Domain.csproj" />
     </ItemGroup>
 
 </Project>
