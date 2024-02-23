@@ -96,7 +96,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(variables('apiAppServiceName'), '-app-service-certificate-', parameters('utcValue'))]",
+            "name": "[concat(variables('apiAppServiceName'), '-app-service-cert-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
