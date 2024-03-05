@@ -19,14 +19,14 @@ public static class ConfigurationExtensions
                 .AddJsonFile("appsettings.json", true)
                 .AddJsonFile("appsettings.Development.json", true);
 
-            configBuilder.AddAzureTableStorage(options =>
-                {
-                    options.ConfigurationKeys = config["ConfigNames"].Split(",");
-                    options.StorageConnectionString = config["ConfigurationStorageConnectionString"];
-                    options.EnvironmentName = config["EnvironmentName"];
-                    options.PreFixConfigurationKeys = false;
-                }
-            );
+            //configBuilder.AddAzureTableStorage(options =>
+            //    {
+            //        options.ConfigurationKeys = config["ConfigNames"].Split(",");
+            //        options.StorageConnectionString = config["ConfigurationStorageConnectionString"];
+            //        options.EnvironmentName = config["EnvironmentName"];
+            //        options.PreFixConfigurationKeys = false;
+            //    }
+            //);
         }
 
         return configBuilder.Build();

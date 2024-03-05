@@ -5,8 +5,17 @@
         <SqlServerVersion>SqlAzure</SqlServerVersion>
     </PropertyGroup>
     <ItemGroup>
+      <None Remove="Tables\NhsStaging.sql" />
+    </ItemGroup>
+    <ItemGroup>
         <None Include="Database.publish.xml">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+    </ItemGroup>
+    <ItemGroup>
+      <Content Update="Tables\NhsStaging.sql">
+        <SuppressTSqlWarnings></SuppressTSqlWarnings>
+        <Pack>False</Pack>
+      </Content>
     </ItemGroup>
 </Project>

@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="12.2.0" />
+      <PackageReference Include="RestEase" Version="1.6.4" />
+      <PackageReference Include="RestEase.HttpClientFactory" Version="1.6.4" />
+    </ItemGroup>
+
 </Project>
