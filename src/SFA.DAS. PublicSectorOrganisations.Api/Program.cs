@@ -22,11 +22,12 @@ builder.Services.AddOptions();
 builder.Services.Configure<PublicSectorOrganisationsConfiguration>(rootConfiguration.GetSection(nameof(PublicSectorOrganisationsConfiguration)));
 builder.Services.AddSingleton(cfg => cfg.GetService<IOptions<PublicSectorOrganisationsConfiguration>>()!.Value);
 
-builder.Services.AddServiceRegistration();
 
 var publicSectorOrganisationsConfiguration = rootConfiguration
     .GetSection(nameof(PublicSectorOrganisationsConfiguration))
     .Get<PublicSectorOrganisationsConfiguration>();
+
+builder.Services.AddServiceRegistration(publicSectorOrganisationsConfiguration!);
 builder.Services.AddDatabaseRegistration(publicSectorOrganisationsConfiguration!, rootConfiguration["EnvironmentName"]);
 
 if (!rootConfiguration.IsDev())

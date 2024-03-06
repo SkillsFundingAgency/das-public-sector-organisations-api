@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SFA.DAS.PublicSectorOrganisations.Domain.Services;
+using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
 namespace SFA.DAS.PublicSectorOrganisations.Application.Import;
 
