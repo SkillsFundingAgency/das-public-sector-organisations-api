@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
+using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.Models;
 
 namespace SFA.DAS.PublicSectorOrganisations.Domain.Services;
@@ -68,13 +70,13 @@ public class NhsImporterService : INhsImporterService
                 Id = Guid.NewGuid(),
                 Name = item.Name,
                 Source = DataSource.Nhs,
-                AddressLine1 = detail?.Organisation?.GeoLoc?.Location?.AddrLn1,
-                AddressLine2 = detail?.Organisation?.GeoLoc?.Location?.AddrLn2,
-                AddressLine3 = detail?.Organisation?.GeoLoc?.Location?.AddrLn3,
-                Town = detail.Organisation?.GeoLoc?.Location?.Town,
-                PostCode = detail.Organisation?.GeoLoc?.Location?.PostCode,
-                Country = detail.Organisation?.GeoLoc?.Location?.Country,
-                UPRN = detail.Organisation?.GeoLoc?.Location?.UPRN,
+                AddressLine1 = detail.AddressLine1,
+                AddressLine2 = detail.AddressLine2,
+                AddressLine3 = detail.AddressLine3,
+                Town = detail.Town,
+                PostCode = detail.PostCode,
+                Country = detail.Country,
+                UPRN = detail.UPRN,
                 OrganisationCode = item.OrgId,
             });
         });

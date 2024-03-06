@@ -1,12 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS. PublicSectorOrganisations.Database", "SFA.DAS. PublicSectorOrganisations.Database\SFA.DAS. PublicSectorOrganisations.Database.csproj", "{6416F00F-96D5-4393-840E-B8083A083C17}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS. PublicSectorOrganisations.Database", "SFA.DAS. PublicSectorOrganisations.Database\SFA.DAS. PublicSectorOrganisations.Database.csproj", "{6416F00F-96D5-4393-840E-B8083A083C17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Api", "SFA.DAS. PublicSectorOrganisations.Api\SFA.DAS.PublicSectorOrganisations.Api.csproj", "{C174E842-7686-4A93-9EEB-1E4348EFC0AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PublicSectorOrganisations.Api", "SFA.DAS. PublicSectorOrganisations.Api\SFA.DAS.PublicSectorOrganisations.Api.csproj", "{C174E842-7686-4A93-9EEB-1E4348EFC0AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Domain", "SFA.DAS. PublicSectorOrganisations.Domain\SFA.DAS.PublicSectorOrganisations.Domain.csproj", "{D525DB2B-95DB-4E53-86DE-6B0B7E4B94D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PublicSectorOrganisations.Domain", "SFA.DAS. PublicSectorOrganisations.Domain\SFA.DAS.PublicSectorOrganisations.Domain.csproj", "{D525DB2B-95DB-4E53-86DE-6B0B7E4B94D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Data", "SFA.DAS. PublicSectorOrganisations.Data\SFA.DAS.PublicSectorOrganisations.Data.csproj", "{CF4B76C5-E967-4DB2-BBF6-D41167251506}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.PublicSectorOrganisations.Data", "SFA.DAS. PublicSectorOrganisations.Data\SFA.DAS.PublicSectorOrganisations.Data.csproj", "{CF4B76C5-E967-4DB2-BBF6-D41167251506}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.PublicSectorOrganisations.Application", "SFA.DAS.PublicSectorOrganisations.Application\SFA.DAS.PublicSectorOrganisations.Application.csproj", "{756F4900-6E09-4F39-B07C-DD21E0DACFBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +35,12 @@ Global
 		{CF4B76C5-E967-4DB2-BBF6-D41167251506}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF4B76C5-E967-4DB2-BBF6-D41167251506}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF4B76C5-E967-4DB2-BBF6-D41167251506}.Release|Any CPU.Build.0 = Release|Any CPU
+		{756F4900-6E09-4F39-B07C-DD21E0DACFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{756F4900-6E09-4F39-B07C-DD21E0DACFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{756F4900-6E09-4F39-B07C-DD21E0DACFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{756F4900-6E09-4F39-B07C-DD21E0DACFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

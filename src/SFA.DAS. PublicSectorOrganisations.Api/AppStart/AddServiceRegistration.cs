@@ -1,5 +1,6 @@
-using RestEase.HttpClientFactory;
-using SFA.DAS.PublicSectorOrganisations.Domain.Application.Commands.Import;
+using SFA.DAS.PublicSectorOrganisations.Application.Import;
+using SFA.DAS.PublicSectorOrganisations.Data.NhsSearch;
+using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.Services;
 
 namespace SFA.DAS.PublicSectorOrganisations.Api.AppStart;

@@ -7,6 +7,7 @@ using SFA.DAS.Api.Common.AppStart;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.PublicSectorOrganisations.Api.AppStart;
+using SFA.DAS.PublicSectorOrganisations.Api.Extensions;
 using SFA.DAS.PublicSectorOrganisations.Api.Infrastructure;
 using SFA.DAS.PublicSectorOrganisations.Data;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
@@ -28,14 +29,13 @@ var publicSectorOrganisationsConfiguration = rootConfiguration
     .Get<PublicSectorOrganisationsConfiguration>();
 builder.Services.AddDatabaseRegistration(publicSectorOrganisationsConfiguration!, rootConfiguration["EnvironmentName"]);
 
-if (rootConfiguration["EnvironmentName"] != "DEV")
+if (!rootConfiguration.IsDev())
 {
     builder.Services.AddHealthChecks()
         .AddDbContextCheck<PublicSectorOrganisationDataContext>();
 }
 
-if (!(rootConfiguration["EnvironmentName"]!.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase) ||
-      rootConfiguration["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase)))
+if (!rootConfiguration.IsLocalOrDev())
 {
     var azureAdConfiguration = rootConfiguration
         .GetSection("AzureAd")
@@ -48,27 +48,19 @@ if (!(rootConfiguration["EnvironmentName"]!.Equals("LOCAL", StringComparison.Cur
     builder.Services.AddAuthentication(azureAdConfiguration, policies);
 }
 
-builder.Services.AddControllers();
-
-
-//builder.Services
-//    .AddMvc(o =>
-//    {
-//        if (!(rootConfiguration["EnvironmentName"]!.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase) ||
-//              rootConfiguration["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase)))
-//        {
-//            //o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string> ()));
-//        }
-//        o.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
-//    })
-//    .AddJsonOptions(options =>
-//    {
-//        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-//    })
-//    .AddNewtonsoftJson(options =>
-//    {
-//        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-//    });
+builder.Services.AddControllers(o =>
+{
+    if (!rootConfiguration.IsLocalOrDev())
+    {
+        o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+    }
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+}).AddNewtonsoftJson(o =>
+{
+    o.SerializerSettings.Converters.Add(new StringEnumConverter());
+});
 
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -84,15 +76,12 @@ builder.Services.AddApiVersioning(opt =>
     opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
 });
 
+builder.Services.AddLogging();
+
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-//app.UseSwaggerUI(c =>
-//{
-//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PublicSectorOrganisationsApi v1");
-//    c.RoutePrefix = string.Empty;
-//});
 
 if (app.Environment.IsDevelopment())
 {
@@ -101,7 +90,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 
-if (!app.Configuration["EnvironmentName"]!.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+if (!app.Configuration.IsDev())
 {
     app.UseHealthChecks();
 }
@@ -109,6 +98,9 @@ if (!app.Configuration["EnvironmentName"]!.Equals("DEV", StringComparison.Curren
 app.UseRouting();
 app.UseAuthorization();
 
-app.MapControllers();
-//app.MapControllerRoute(name: "default", pattern: "api/{controller=Users}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    _ = endpoints.MapDefaultControllerRoute();
+});
+
 app.Run();

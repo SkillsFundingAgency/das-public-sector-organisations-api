@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.PublicSectorOrganisations.Domain.Application.Commands.Import;
+using SFA.DAS.PublicSectorOrganisations.Application.Import;
 
 namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
     [Route("/dataload")]
     public class DataLoadController : Controller
@@ -22,7 +23,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
         {
             await _mediator.Send(new ImportCommand());
 
-            return Ok();
+            return NoContent();
         }
     }
 }

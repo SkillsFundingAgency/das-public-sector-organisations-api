@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using System.Web;
+﻿using System.Web;
+using Newtonsoft.Json;
+using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
+using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
-namespace SFA.DAS.PublicSectorOrganisations.Domain.Services;
-
-public interface INhsClient
-{
-    Task<GetAllOrganisationsResponse> GetAllOrganisations(string sector);
-    Task<GetOrganisationResponse> GetOrganisation(string orgId);
-}
+namespace SFA.DAS.PublicSectorOrganisations.Data.NhsSearch;
 
 
 public class NhsClient : INhsClient
@@ -25,50 +21,35 @@ public class NhsClient : INhsClient
         return result;
     }
 
-    public async Task<GetOrganisationResponse> GetOrganisation(string orgId)
+    public async Task<GetSingleOrganisationResponse> GetOrganisation(string orgId)
     {
         var response = await _client.GetStringAsync("ORD/2-0-0/organisations/" + HttpUtility.UrlEncode(orgId));
         var result = JsonConvert.DeserializeObject<GetOrganisationResponse>(response);
-        return result;
+
+        return new GetSingleOrganisationResponse
+        {
+            AddressLine1 = result.Organisation?.GeoLoc?.Location?.AddrLn1,
+            AddressLine2 = result.Organisation?.GeoLoc?.Location?.AddrLn2,
+            AddressLine3 = result.Organisation?.GeoLoc?.Location?.AddrLn3,
+            Town = result.Organisation?.GeoLoc?.Location?.Town,
+            PostCode = result.Organisation?.GeoLoc?.Location?.PostCode,
+            Country = result.Organisation?.GeoLoc?.Location?.Country,
+            UPRN = result.Organisation?.GeoLoc?.Location?.UPRN,
+        };
     }
 }
 
-public class GetAllOrganisationsResponse
-{
-    public OrganisationSummary[] Organisations { get; set; }
-}
-
-public class GetOrganisationResponse
+class GetOrganisationResponse
 {
     public OrganisationDetails Organisation { get; set; }
 }
 
-public class OrganisationSummary
-{
-    public string Name { get; set; }
-    public string OrgId { get; set; }
-    public string OrgRecordClass { get; set; }
-    public string PostCode { get; set; }
-    public string PrimaryRoleId { get; set; }
-    public string PrimaryRoleDescription { get; set; }
-    public string OrgLink { get; set; }
-    public string UPRN { get; set; }
-
-}
-
-public class OrganisationDetails
-{
-
-    public string Name { get; set; }
-    public GeoLoc GeoLoc { get; set; }
-}
-
-public class GeoLoc
+class GeoLoc
 {
     public Location Location { get; set; }
 }
 
-public class Location
+class Location
 {
     public string AddrLn1 { get; set; }
     public string AddrLn2 { get; set; }
@@ -79,5 +60,9 @@ public class Location
     public string UPRN { get; set; }
 }
 
+class OrganisationDetails
+{
 
-
+    public string Name { get; set; }
+    public GeoLoc GeoLoc { get; set; }
+}

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MediatR;
-using SFA.DAS.PublicSectorOrganisations.Domain.Models;
+﻿using MediatR;
 using SFA.DAS.PublicSectorOrganisations.Domain.Services;
 
-namespace SFA.DAS.PublicSectorOrganisations.Domain.Application.Commands.Import;
+namespace SFA.DAS.PublicSectorOrganisations.Application.Import;
 
 public class ImportCommandHandler : IRequestHandler<ImportCommand>
 {
