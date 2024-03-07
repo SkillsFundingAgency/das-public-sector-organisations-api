@@ -1,4 +1,6 @@
-﻿namespace SFA.DAS.PublicSectorOrganisations.Api.Extensions;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace SFA.DAS.PublicSectorOrganisations.Domain.Extensions;
 
 public static class ConfigurationExtensions
 {

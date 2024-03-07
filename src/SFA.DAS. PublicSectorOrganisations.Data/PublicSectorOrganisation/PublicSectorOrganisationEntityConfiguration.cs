@@ -9,6 +9,6 @@ public class PublicSectorOrganisationEntityConfiguration : IEntityTypeConfigurat
     public void Configure(EntityTypeBuilder<PublicSectorOrganisationEntity> builder)
     {
         builder.ToTable("PublicSectorOrganisation");
-        // builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.Id);
     }
 }   

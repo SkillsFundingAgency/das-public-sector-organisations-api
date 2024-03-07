@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
-namespace SFA.DAS.PublicSectorOrganisations.Data.NhsSearch;
+namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 
 
 public class NhsClient : INhsClient

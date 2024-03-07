@@ -14,11 +14,13 @@ public interface IPublicSectorOrganisationDataContext
     DbSet<PublicSectorOrganisationEntity> PublicSectorOrganisationEntities { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken  = default (CancellationToken));
 }
+
 public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrganisationDataContext
 {
     private const string AzureResource = "https://database.windows.net/";
     private readonly ChainedTokenCredential _azureServiceTokenProvider;
     private readonly EnvironmentConfiguration _environmentConfiguration;
+
     public DbSet<PublicSectorOrganisationEntity> PublicSectorOrganisationEntities { get; set; }
 
     private readonly PublicSectorOrganisationsConfiguration? _configuration;
@@ -47,11 +49,11 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
         {
             return;
         }
-            
+
         var connection = new SqlConnection
         {
             ConnectionString = _configuration.ConnectionString,
-            AccessToken = _azureServiceTokenProvider.GetTokenAsync(new TokenRequestContext(scopes: new string[] { AzureResource })).Result.Token,
+            AccessToken = _azureServiceTokenProvider.GetTokenAsync(new TokenRequestContext(scopes: new string[] { AzureResource })).Result.Token
         };
             
         optionsBuilder.UseSqlServer(connection,options=>
@@ -66,6 +68,6 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
     {
         modelBuilder.ApplyConfiguration(new PublicSectorOrganisationEntityConfiguration());
         
-        base.OnModelCreating(modelBuilder);
+        //base.OnModelCreating(modelBuilder);
     }
 }

@@ -7,10 +7,10 @@ using SFA.DAS.Api.Common.AppStart;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.PublicSectorOrganisations.Api.AppStart;
-using SFA.DAS.PublicSectorOrganisations.Api.Extensions;
 using SFA.DAS.PublicSectorOrganisations.Api.Infrastructure;
 using SFA.DAS.PublicSectorOrganisations.Data;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
+using SFA.DAS.PublicSectorOrganisations.Domain.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

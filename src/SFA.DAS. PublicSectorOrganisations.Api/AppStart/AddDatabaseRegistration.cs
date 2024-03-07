@@ -13,7 +13,7 @@ public static class DatabaseExtensions
         services.AddHttpContextAccessor();
         if (environmentName.Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
         {
-            services.AddDbContext<PublicSectorOrganisationDataContext>(options => options.UseInMemoryDatabase("SFA.DAS.PublicSectorOrganisation"), ServiceLifetime.Transient);
+            services.AddDbContext<PublicSectorOrganisationDataContext>(options => options.UseInMemoryDatabase("SFA.DAS.PublicSectorOrganisations"), ServiceLifetime.Transient);
         }
         else if (environmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase))
         {

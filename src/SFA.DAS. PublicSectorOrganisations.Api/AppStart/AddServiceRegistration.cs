@@ -1,6 +1,5 @@
 using SFA.DAS.PublicSectorOrganisations.Application.Import;
-using SFA.DAS.PublicSectorOrganisations.Application.Services;
-using SFA.DAS.PublicSectorOrganisations.Data.NhsSearch;
+using SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
