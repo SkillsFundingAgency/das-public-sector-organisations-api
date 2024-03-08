@@ -1,6 +1,10 @@
 ﻿namespace SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
-public interface INhsImporterService
+public interface IImporterService
 {
     Task ImportData();
+}
+
+public interface INhsImporterService : IImporterService 
+{
 }

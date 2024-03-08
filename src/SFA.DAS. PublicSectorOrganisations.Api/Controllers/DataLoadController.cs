@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.PublicSectorOrganisations.Application.Import;
+using SFA.DAS.PublicSectorOrganisations.Application.Commands.Import;
 
 namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
 {

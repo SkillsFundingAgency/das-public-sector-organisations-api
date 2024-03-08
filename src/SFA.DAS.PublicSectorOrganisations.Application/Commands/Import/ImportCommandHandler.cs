@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
-namespace SFA.DAS.PublicSectorOrganisations.Application.Import;
+namespace SFA.DAS.PublicSectorOrganisations.Application.Commands.Import;
 
 public class ImportCommandHandler : IRequestHandler<ImportCommand>
 {
@@ -14,7 +14,14 @@ public class ImportCommandHandler : IRequestHandler<ImportCommand>
 
     public async Task Handle(ImportCommand request, CancellationToken cancellationToken)
     {
-        await _nhsImporterService.ImportData();
+        var importers = new List<Func<Task>> {() => _nhsImporterService.ImportData()};
+
+        await Parallel.ForEachAsync(importers, cancellationToken, async (x, cancellationToken) =>
+        {
+            await x.Invoke();
+        });
+
+        //await _nhsImporterService.ImportData();
 
     }
 }
