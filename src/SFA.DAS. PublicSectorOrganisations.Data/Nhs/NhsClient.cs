@@ -5,7 +5,6 @@ using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 
-
 public class NhsClient : INhsClient
 {
     private readonly HttpClient _client;
@@ -39,17 +38,17 @@ public class NhsClient : INhsClient
     }
 }
 
-class GetOrganisationResponse
+public class GetOrganisationResponse
 {
     public OrganisationDetails Organisation { get; set; }
 }
 
-class GeoLoc
+public class GeoLoc
 {
     public Location Location { get; set; }
 }
 
-class Location
+public class Location
 {
     public string AddrLn1 { get; set; }
     public string AddrLn2 { get; set; }
@@ -60,9 +59,8 @@ class Location
     public string UPRN { get; set; }
 }
 
-class OrganisationDetails
+public class OrganisationDetails
 {
-
     public string Name { get; set; }
     public GeoLoc GeoLoc { get; set; }
 }
