@@ -9,7 +9,7 @@ using SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 using SFA.DAS.PublicSectorOrganisations.Data.Tests.Helpers;
 using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 
-namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs;
+namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsClient;
 public class WhenCallingGetOrganisation
 {
     [Test, AutoData]
@@ -28,7 +28,7 @@ public class WhenCallingGetOrganisation
         {
             BaseAddress = new Uri(baseUrl)
         };
-        var sut = new NhsClient(httpClient);
+        var sut = new Data.Nhs.NhsClient(httpClient);
         var expectedResponse = new GetSingleOrganisationResponse()
         {
             AddressLine1 = responseFromApi.Organisation.GeoLoc.Location.AddrLn1,

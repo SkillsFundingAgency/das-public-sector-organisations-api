@@ -20,8 +20,5 @@ public class ImportCommandHandler : IRequestHandler<ImportCommand>
         {
             await x.Invoke();
         });
-
-        //await _nhsImporterService.ImportData();
-
     }
 }

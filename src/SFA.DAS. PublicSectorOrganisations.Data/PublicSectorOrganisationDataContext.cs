@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SFA.DAS.PublicSectorOrganisations.Data.PublicSectorOrganisation;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
+using SFA.DAS.PublicSectorOrganisations.Domain.Exceptions;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data;
@@ -13,6 +14,7 @@ public interface IPublicSectorOrganisationDataContext
 {
     DbSet<PublicSectorOrganisationEntity> PublicSectorOrganisationEntities { get; set; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken  = default (CancellationToken));
+    Task ExecuteInATransaction(Func<Task> action);
 }
 
 public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrganisationDataContext
@@ -31,8 +33,8 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
 
     public PublicSectorOrganisationDataContext(DbContextOptions options) : base(options)
     {
-            
     }
+    
     public PublicSectorOrganisationDataContext(IOptions<PublicSectorOrganisationsConfiguration> config, DbContextOptions options, ChainedTokenCredential azureServiceTokenProvider, EnvironmentConfiguration environmentConfiguration) :base(options)
     {
         _azureServiceTokenProvider = azureServiceTokenProvider;
@@ -68,6 +70,25 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
     {
         modelBuilder.ApplyConfiguration(new PublicSectorOrganisationEntityConfiguration());
         
-        //base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
+
+    public async Task ExecuteInATransaction(Func<Task> action)
+    {
+        using (var transaction = await Database.BeginTransactionAsync())
+        {
+            try
+            {
+                await action.Invoke();
+                await SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new WithinTransactionException($"Transaction is being rolled back", ex);
+            }
+        }
+    }
+
 }
