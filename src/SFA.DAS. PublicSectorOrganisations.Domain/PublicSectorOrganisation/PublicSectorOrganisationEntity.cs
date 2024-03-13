@@ -1,5 +1,3 @@
-using SFA.DAS.PublicSectorOrganisations.Domain.Models;
-
 namespace SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 public class PublicSectorOrganisationEntity

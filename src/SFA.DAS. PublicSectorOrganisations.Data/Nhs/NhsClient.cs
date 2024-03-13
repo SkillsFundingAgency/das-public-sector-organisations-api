@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using Newtonsoft.Json;
-using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
+using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 

@@ -1,4 +1,4 @@
-﻿namespace SFA.DAS.PublicSectorOrganisations.Domain.Entities;
+﻿namespace SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 
 public class GetSingleOrganisationResponse
 {

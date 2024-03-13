@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SFA.DAS.PublicSectorOrganisations.Domain.Exceptions;
-using SFA.DAS.PublicSectorOrganisations.Domain.Models;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Extensions;

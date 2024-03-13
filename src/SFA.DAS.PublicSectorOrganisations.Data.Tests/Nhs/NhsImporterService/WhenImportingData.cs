@@ -4,9 +4,8 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
-using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
-using SFA.DAS.PublicSectorOrganisations.Domain.Models;
+using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 using SFA.DAS.Testing.AutoFixture;
 

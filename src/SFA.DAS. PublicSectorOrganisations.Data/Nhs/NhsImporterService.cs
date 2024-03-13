@@ -1,9 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
-using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
-using SFA.DAS.PublicSectorOrganisations.Domain.Models;
+using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;

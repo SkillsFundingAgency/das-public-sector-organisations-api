@@ -6,7 +6,7 @@ using System.Net;
 using FluentAssertions;
 using Newtonsoft.Json;
 using SFA.DAS.PublicSectorOrganisations.Data.Tests.Helpers;
-using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
+using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsClient;
 public class WhenCallingGetAllOrganisations

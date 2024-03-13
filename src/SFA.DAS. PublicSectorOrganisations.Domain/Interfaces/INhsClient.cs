@@ -1,4 +1,4 @@
-﻿using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
+﻿using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 
 namespace SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
