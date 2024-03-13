@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
@@ -9,13 +8,23 @@ using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 
-public class NhsImporterService(
-    INhsClient client,
-    PublicSectorOrganisationsConfiguration publicSectorOrganisationsConfiguration,
-    Lazy<PublicSectorOrganisationDataContext> dbContext,
-    ILogger<NhsImporterService> logger) : INhsImporterService
+public class NhsImporterService : INhsImporterService
 {
-    private readonly NhsSector[] _sectors = publicSectorOrganisationsConfiguration.NhsSectors;
+    private readonly INhsClient _client;
+    private readonly IPublicSectorOrganisationRepository _dbRepository;
+    private readonly ILogger<NhsImporterService> _logger;
+    private readonly NhsSector[] _sectors;
+
+    public NhsImporterService(INhsClient client,
+        PublicSectorOrganisationsConfiguration publicSectorOrganisationsConfiguration,
+        IPublicSectorOrganisationRepository dbRepository,
+        ILogger<NhsImporterService> logger)
+    {
+        _client = client;
+        _dbRepository = dbRepository;
+        _logger = logger;
+        _sectors = publicSectorOrganisationsConfiguration.NhsSectors;
+    }
 
     public async Task ImportData()
     {
@@ -24,28 +33,11 @@ public class NhsImporterService(
         var newRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
         var updateRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
 
-        var db = dbContext.Value;
-        var nhsList = await db.PublicSectorOrganisationEntities.Where(x=>x.Source == DataSource.Nhs).AsNoTracking().ToListAsync();
+        var nhsList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Nhs);
 
         await FetchNewAndExistingDetails(data, nhsList, updateRecords, newRecords);
 
-        try
-        {
-            logger.LogInformation("Updating {existingCount} and adding {newCount} NHS Organisations", updateRecords.Count, newRecords.Count);
-            await db.Database.BeginTransactionAsync();
-            await db.PublicSectorOrganisationEntities.Where(x=>x.Source == DataSource.Nhs).ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
-            await db.PublicSectorOrganisationEntities.AddRangeAsync(newRecords);
-            db.PublicSectorOrganisationEntities.UpdateRange(updateRecords);
-            await db.SaveChangesAsync();
-            await db.Database.CommitTransactionAsync();
-            logger.LogInformation("NHS Update succeeded");
-        }
-        catch (Exception e)
-        {
-            logger.LogError(e, "NHS Update failed with : {message}", e.Message);
-            await db.Database.RollbackTransactionAsync();
-            throw;
-        }
+        await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, updateRecords, newRecords);
     }
 
     private async Task FetchNewAndExistingDetails(ConcurrentBag<OrganisationSummary> data, IReadOnlyCollection<PublicSectorOrganisationEntity> nhsList, ConcurrentBag<PublicSectorOrganisationEntity> updateRecords,
@@ -53,10 +45,10 @@ public class NhsImporterService(
     {
         try
         {
-            logger.LogInformation("Collecting NHS Details for each Organisation");
+            _logger.LogInformation("Collecting NHS Details for each Organisation");
             await Parallel.ForEachAsync(data, async (item, ct) =>
             {
-                var detail = await client.GetOrganisation(item.OrgId);
+                var detail = await _client.GetOrganisation(item.OrgId);
                 var existingEntity = nhsList.FirstOrDefault(x =>
                     x.OrganisationCode.Equals(item.OrgId, StringComparison.InvariantCultureIgnoreCase));
 
@@ -85,11 +77,11 @@ public class NhsImporterService(
                     newRecords.Add(record);
                 }
             });
-            logger.LogInformation("Completed collecting NHS Details for each Organisation");
+            _logger.LogInformation("Completed collecting NHS Details for each Organisation");
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Collecting NHS Details for each Organisation failed with : {message}", e.Message);
+            _logger.LogError(e, "Collecting NHS Details for each Organisation failed with : {message}", e.Message);
             throw;
         }
     }
@@ -99,22 +91,22 @@ public class NhsImporterService(
         var data = new ConcurrentBag<OrganisationSummary>();
         try
         {
-            logger.LogInformation("Collecting NHS Organisations by Sector");
+            _logger.LogInformation("Collecting NHS Organisations by Sector");
             await Parallel.ForEachAsync(_sectors, async (item, ct) =>
             {
-                var response = await client.GetAllOrganisations(item.InternalCode);
+                var response = await _client.GetAllOrganisations(item.InternalCode);
 
                 foreach (var summary in response.Organisations)
                 {
                     data.Add(summary);
                 }
             });
-            logger.LogInformation("Completed collecting NHS Organisations by Sector");
+            _logger.LogInformation("Completed collecting NHS Organisations by Sector");
 
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Collecting NHS Organisations by Sector failed with : {message}", e.Message);
+            _logger.LogError(e, "Collecting NHS Organisations by Sector failed with : {message}", e.Message);
             throw;
         }
 

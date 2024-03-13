@@ -2,19 +2,13 @@
 using Moq.Protected;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Newtonsoft.Json;
-using SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 using SFA.DAS.PublicSectorOrganisations.Data.Tests.Helpers;
 using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 
-namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs;
+namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsClient;
 public class WhenCallingGetAllOrganisations
 {
     [Test, AutoData]
@@ -33,7 +27,7 @@ public class WhenCallingGetAllOrganisations
         {
             BaseAddress = new Uri(baseUrl)
         };
-        var sut = new NhsClient(httpClient);
+        var sut = new Data.Nhs.NhsClient(httpClient);
 
         //Act
         var response = await sut.GetAllOrganisations(sector);
