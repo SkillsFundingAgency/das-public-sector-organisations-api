@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Concurrent;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
@@ -36,18 +36,23 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             SetupDetailResponsesForSummary(nhsClientMock, response1, organisationsForResponse1);
             SetupDetailResponsesForSummary(nhsClientMock, response2, organisationsForResponse2);
 
-            var dbContextMock = new Mock<IPublicSectorOrganisationDataContext>();
-            var dbSetMock = new MockDbSet<PublicSectorOrganisationEntity>();
+            var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
+            dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Nhs)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
 
-            dbContextMock.Setup(x => x.PublicSectorOrganisationEntities)
-                .Returns(dbSetMock);
-
-
-            var sut = new Data.Nhs.NhsImporterService(nhsClientMock.Object, config, dbContextMock.Object, logger);
+            var sut = new Data.Nhs.NhsImporterService(nhsClientMock.Object, config, dbRepositoryMock.Object, logger);
             await sut.ImportData();
 
-            sut.NumberOfRecordsAdded.Should().Be(organisationsForResponse2.Count + organisationsForResponse1.Count);
-            sut.NumberOfRecordsUpdated.Should().Be(0);
+            dbRepositoryMock.Verify(x=>x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, 
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>()));
+
+            dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>(),
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p => p.Count == 6 &&
+                                                                          VerifyMappedRecordHasExpectedValues(p, response1.Organisations[0], organisationsForResponse1[0]) &&
+                                                                          VerifyMappedRecordHasExpectedValues(p, response1.Organisations[1], organisationsForResponse1[1]) &&
+                                                                          VerifyMappedRecordHasExpectedValues(p, response1.Organisations[2], organisationsForResponse1[2]) &&
+                                                                          VerifyMappedRecordHasExpectedValues(p, response2.Organisations[0], organisationsForResponse2[0]) &&
+                                                                          VerifyMappedRecordHasExpectedValues(p, response2.Organisations[1], organisationsForResponse2[1]) &&
+                                                                          VerifyMappedRecordHasExpectedValues(p, response2.Organisations[2], organisationsForResponse2[2]))));
         }
 
         [Test, MoqAutoData]
@@ -72,28 +77,25 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             SetupDetailResponsesForSummary(nhsClientMock, response1, organisationsForResponse1);
             SetupDetailResponsesForSummary(nhsClientMock, response2, organisationsForResponse2);
 
-            var dbContextMock = new Mock<IPublicSectorOrganisationDataContext>();
-            var dbSetMock = new MockDbSet<PublicSectorOrganisationEntity>(SetupExistingDataAsExisting(response2));
-            dbContextMock.Setup(x => x.PublicSectorOrganisationEntities)
-                .Returns(dbSetMock);
+            var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
+            dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Nhs)).ReturnsAsync(SetupExistingDataAsExisting(response2));
 
-            var sut = new Data.Nhs.NhsImporterService(nhsClientMock.Object, config, dbContextMock.Object, logger);
+            var sut = new Data.Nhs.NhsImporterService(nhsClientMock.Object, config, dbRepositoryMock.Object, logger);
             await sut.ImportData();
 
-            sut.NumberOfRecordsAdded.Should().Be(organisationsForResponse1.Count);
-            sut.NumberOfRecordsUpdated.Should().Be(organisationsForResponse2.Count);
-        }
+            dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs,
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p => p.Count == 3), 
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=> p.Count == 3)));
 
-        private static PublicSectorOrganisationDataContext CreateInMemoryPublicSectorOrganisationDataContext()
-        {
-            var dbOptions = new DbContextOptionsBuilder<PublicSectorOrganisationDataContext>();
-            dbOptions.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
-            dbOptions.UseInMemoryDatabase(Guid.NewGuid().ToString());
-            dbOptions.EnableSensitiveDataLogging();
-            var db = new PublicSectorOrganisationDataContext(dbOptions.Options);
-            db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTrackingWithIdentityResolution;
-
-            return db;
+            dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs,
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p =>
+                    VerifyMappedRecordHasExpectedValues(p, response2.Organisations[0], organisationsForResponse2[0]) &&
+                    VerifyMappedRecordHasExpectedValues(p, response2.Organisations[1], organisationsForResponse2[1]) &&
+                    VerifyMappedRecordHasExpectedValues(p, response2.Organisations[2], organisationsForResponse2[2])),
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p =>
+                    VerifyMappedRecordHasExpectedValues(p, response1.Organisations[0], organisationsForResponse1[0]) &&
+                    VerifyMappedRecordHasExpectedValues(p, response1.Organisations[1], organisationsForResponse1[1]) &&
+                    VerifyMappedRecordHasExpectedValues(p, response1.Organisations[2], organisationsForResponse1[2]))));
         }
 
         private List<PublicSectorOrganisationEntity> SetupExistingDataAsExisting(GetAllOrganisationsResponse response2)
@@ -114,39 +116,22 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             return list;
         }
 
-
-        private async Task SetupExistingDataFrom(PublicSectorOrganisationDataContext dbContext, GetAllOrganisationsResponse response2)
+        private bool VerifyMappedRecordHasExpectedValues(ConcurrentBag<PublicSectorOrganisationEntity> records, OrganisationSummary header, GetSingleOrganisationResponse detail)
         {
-            foreach (var summary in response2.Organisations)
-            {
-                dbContext.PublicSectorOrganisationEntities.Add(new PublicSectorOrganisationEntity
+            records.First(x => x.OrganisationCode == header.OrgId).Should().BeEquivalentTo(
+                new 
                 {
-                    Id = Guid.NewGuid(),
-                    OrganisationCode = summary.OrgId,
+                    header.Name,
                     Source = DataSource.Nhs,
-                    Name = "Anything",
-                    AddressLine1 = "Anything"
+                    detail.AddressLine1,
+                    detail.AddressLine2,
+                    detail.AddressLine3,
+                    detail.Town,
+                    detail.PostCode,
+                    detail.Country,
+                    detail.UPRN,
                 });
-            }
-
-            await dbContext.SaveChangesAsync();
-        }
-
-        private void VerifyMappedRecordInDatabaseHasExpectedValues(PublicSectorOrganisationDataContext db, OrganisationSummary header, GetSingleOrganisationResponse detail)
-        {
-            db.PublicSectorOrganisationEntities.First(x => x.OrganisationCode == header.OrgId).Should().BeEquivalentTo(
-                new PublicSectorOrganisationEntity
-                {
-                    Name = header.Name,
-                    Source = DataSource.Nhs,
-                    AddressLine1 = detail.AddressLine1,
-                    AddressLine2 = detail.AddressLine2,
-                    AddressLine3 = detail.AddressLine3,
-                    Town = detail.Town,
-                    PostCode = detail.PostCode,
-                    Country = detail.Country,
-                    UPRN = detail.UPRN,
-                });
+            return true;
         }
 
         private void SetupDetailResponsesForSummary(Mock<INhsClient> mock, GetAllOrganisationsResponse summaryResponse, List<GetSingleOrganisationResponse> detailsResponse)
@@ -158,14 +143,5 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
                 i++;
             }
         }
-
-        private IEnumerable<PublicSectorOrganisationEntity> GetListOfPublicSectorOrganisationEntities()
-        {
-            return new List<PublicSectorOrganisationEntity>
-            {
-                new PublicSectorOrganisationEntity {Id = Guid.NewGuid(), Name = "Name 1", Source = DataSource.Nhs},
-            };
-        }
-
     }
 }

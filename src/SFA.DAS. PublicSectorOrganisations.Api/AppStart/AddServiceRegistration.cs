@@ -1,4 +1,5 @@
 using SFA.DAS.PublicSectorOrganisations.Application.Commands.Import;
+using SFA.DAS.PublicSectorOrganisations.Data;
 using SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
@@ -12,5 +13,6 @@ public static class AddServiceRegistrationExtension
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(ImportCommand).Assembly));
         services.AddHttpClient<INhsClient, NhsClient>(client => client.BaseAddress = new Uri(config.NhsUrl));
         services.AddTransient<INhsImporterService, NhsImporterService>();
+        services.AddTransient<IPublicSectorOrganisationRepository, PublicSectorOrganisationRepository>();
     }
 }

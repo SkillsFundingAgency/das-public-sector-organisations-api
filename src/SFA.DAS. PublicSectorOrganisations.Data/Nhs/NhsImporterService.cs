@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics.Metrics;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using SFA.DAS.PublicSectorOrganisations.Data.Extensions;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Entities;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
@@ -16,20 +11,17 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 public class NhsImporterService : INhsImporterService
 {
     private readonly INhsClient _client;
-    private readonly IPublicSectorOrganisationDataContext _dbContext;
+    private readonly IPublicSectorOrganisationRepository _dbRepository;
     private readonly ILogger<NhsImporterService> _logger;
     private readonly NhsSector[] _sectors;
 
-    public int NumberOfRecordsAdded { get; private set; }
-    public int NumberOfRecordsUpdated { get; private set; }
-
     public NhsImporterService(INhsClient client,
         PublicSectorOrganisationsConfiguration publicSectorOrganisationsConfiguration,
-        IPublicSectorOrganisationDataContext dbContext,
+        IPublicSectorOrganisationRepository dbRepository,
         ILogger<NhsImporterService> logger)
     {
         _client = client;
-        _dbContext = dbContext;
+        _dbRepository = dbRepository;
         _logger = logger;
         _sectors = publicSectorOrganisationsConfiguration.NhsSectors;
     }
@@ -41,21 +33,11 @@ public class NhsImporterService : INhsImporterService
         var newRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
         var updateRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
 
-        var nhsList = _dbContext.PublicSectorOrganisationEntities.Where(x=>x.Source == DataSource.Nhs).AsNoTracking().ToList();
+        var nhsList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Nhs);
 
         await FetchNewAndExistingDetails(data, nhsList, updateRecords, newRecords);
-        NumberOfRecordsAdded = newRecords.Count;
-        NumberOfRecordsUpdated = updateRecords.Count;
 
-        await _dbContext.ExecuteInATransaction(async () =>
-        {
-            _logger.LogInformation("Updating {existingCount} and adding {newCount} NHS Organisations", updateRecords.Count, newRecords.Count);
-            await _dbContext.PublicSectorOrganisationEntities.Where(x => x.Source == DataSource.Nhs)
-                .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
-            await _dbContext.PublicSectorOrganisationEntities.AddRangeAsync(newRecords);
-            _dbContext.PublicSectorOrganisationEntities.UpdateRange((updateRecords));
-
-        });
+        await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, updateRecords, newRecords);
     }
 
     private async Task FetchNewAndExistingDetails(ConcurrentBag<OrganisationSummary> data, IReadOnlyCollection<PublicSectorOrganisationEntity> nhsList, ConcurrentBag<PublicSectorOrganisationEntity> updateRecords,
