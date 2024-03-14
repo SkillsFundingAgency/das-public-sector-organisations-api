@@ -8,3 +8,11 @@ public interface IImporterService
 public interface INhsImporterService : IImporterService 
 {
 }
+
+public interface IOnsImporterService : IImporterService
+{
+}
+
+public interface IPoliceImporterService : IImporterService
+{
+}

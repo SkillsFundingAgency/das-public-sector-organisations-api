@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
-public interface INhsClient
+public interface INhsApiClient
 {
     Task<GetAllOrganisationsResponse> GetAllOrganisations(string sector);
     Task<GetSingleOrganisationResponse> GetOrganisation(string orgId);

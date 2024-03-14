@@ -26,4 +26,8 @@
     <ProjectReference Include="..\SFA.DAS. PublicSectorOrganisations.Data\SFA.DAS.PublicSectorOrganisations.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Ons\" />
+  </ItemGroup>
+
 </Project>

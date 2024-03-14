@@ -28,7 +28,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
                 NhsSectors = (new List<NhsSector> {new() {ExternalCode = "E1", InternalCode = "I1"}, new() { ExternalCode = "E2", InternalCode = "I2" }}).ToArray()
             };
 
-            var nhsClientMock = new Mock<INhsClient>();
+            var nhsClientMock = new Mock<INhsApiClient>();
             nhsClientMock.Setup(x => x.GetAllOrganisations(config.NhsSectors[0].InternalCode)).ReturnsAsync(response1);
             nhsClientMock.Setup(x => x.GetAllOrganisations(config.NhsSectors[1].InternalCode)).ReturnsAsync(response2);
 
@@ -69,7 +69,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
                 NhsSectors = (new List<NhsSector> { new() { ExternalCode = "E1", InternalCode = "I1" }, new() { ExternalCode = "E2", InternalCode = "I2" } }).ToArray()
             };
 
-            var nhsClientMock = new Mock<INhsClient>();
+            var nhsClientMock = new Mock<INhsApiClient>();
             nhsClientMock.Setup(x => x.GetAllOrganisations(config.NhsSectors[0].InternalCode)).ReturnsAsync(response1);
             nhsClientMock.Setup(x => x.GetAllOrganisations(config.NhsSectors[1].InternalCode)).ReturnsAsync(response2);
 
@@ -133,7 +133,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             return true;
         }
 
-        private void SetupDetailResponsesForSummary(Mock<INhsClient> mock, GetAllOrganisationsResponse summaryResponse, List<GetSingleOrganisationResponse> detailsResponse)
+        private void SetupDetailResponsesForSummary(Mock<INhsApiClient> mock, GetAllOrganisationsResponse summaryResponse, List<GetSingleOrganisationResponse> detailsResponse)
         {
             var i = 0;
             foreach (var organisation in summaryResponse.Organisations)

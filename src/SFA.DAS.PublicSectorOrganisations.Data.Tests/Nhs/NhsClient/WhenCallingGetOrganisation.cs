@@ -28,7 +28,7 @@ public class WhenCallingGetOrganisation
         {
             BaseAddress = new Uri(baseUrl)
         };
-        var sut = new Data.Nhs.NhsClient(httpClient);
+        var sut = new Data.Nhs.NhsApiClient(httpClient);
         var expectedResponse = new GetSingleOrganisationResponse()
         {
             AddressLine1 = responseFromApi.Organisation.GeoLoc.Location.AddrLn1,

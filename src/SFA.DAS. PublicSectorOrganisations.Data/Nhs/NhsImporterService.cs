@@ -9,17 +9,17 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 
 public class NhsImporterService : INhsImporterService
 {
-    private readonly INhsClient _client;
+    private readonly INhsApiClient _apiClient;
     private readonly IPublicSectorOrganisationRepository _dbRepository;
     private readonly ILogger<NhsImporterService> _logger;
     private readonly NhsSector[] _sectors;
 
-    public NhsImporterService(INhsClient client,
+    public NhsImporterService(INhsApiClient apiClient,
         PublicSectorOrganisationsConfiguration publicSectorOrganisationsConfiguration,
         IPublicSectorOrganisationRepository dbRepository,
         ILogger<NhsImporterService> logger)
     {
-        _client = client;
+        _apiClient = apiClient;
         _dbRepository = dbRepository;
         _logger = logger;
         _sectors = publicSectorOrganisationsConfiguration.NhsSectors;
@@ -47,7 +47,7 @@ public class NhsImporterService : INhsImporterService
             _logger.LogInformation("Collecting NHS Details for each Organisation");
             await Parallel.ForEachAsync(data, async (item, ct) =>
             {
-                var detail = await _client.GetOrganisation(item.OrgId);
+                var detail = await _apiClient.GetOrganisation(item.OrgId);
                 var existingEntity = nhsList.FirstOrDefault(x =>
                     x.OrganisationCode.Equals(item.OrgId, StringComparison.InvariantCultureIgnoreCase));
 
@@ -93,7 +93,7 @@ public class NhsImporterService : INhsImporterService
             _logger.LogInformation("Collecting NHS Organisations by Sector");
             await Parallel.ForEachAsync(_sectors, async (item, ct) =>
             {
-                var response = await _client.GetAllOrganisations(item.InternalCode);
+                var response = await _apiClient.GetAllOrganisations(item.InternalCode);
 
                 foreach (var summary in response.Organisations)
                 {

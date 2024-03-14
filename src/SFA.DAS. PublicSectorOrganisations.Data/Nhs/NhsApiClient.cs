@@ -5,11 +5,11 @@ using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 
-public class NhsClient : INhsClient
+public class NhsApiClient : INhsApiClient
 {
     private readonly HttpClient _client;
 
-    public NhsClient(HttpClient client)
+    public NhsApiClient(HttpClient client)
     {
         _client = client;
     }

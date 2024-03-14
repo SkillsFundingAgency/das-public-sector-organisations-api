@@ -27,7 +27,7 @@ public class WhenCallingGetAllOrganisations
         {
             BaseAddress = new Uri(baseUrl)
         };
-        var sut = new Data.Nhs.NhsClient(httpClient);
+        var sut = new Data.Nhs.NhsApiClient(httpClient);
 
         //Act
         var response = await sut.GetAllOrganisations(sector);
