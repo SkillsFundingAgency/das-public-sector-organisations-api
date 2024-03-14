@@ -14,8 +14,8 @@ public static class AddServiceRegistrationExtension
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(ImportCommand).Assembly));
         services.AddHttpClient<IPoliceApiClient, PoliceApiClient>(client => client.BaseAddress = new Uri(config.PoliceForceUrl));
         services.AddTransient<IPoliceImporterService, PoliceImporterService>();
+        services.AddHttpClient<INhsApiClient, NhsApiClient>(client => client.BaseAddress = new Uri(config.NhsUrl));
         services.AddTransient<INhsImporterService, NhsImporterService>();
         services.AddTransient<IPublicSectorOrganisationRepository, PublicSectorOrganisationRepository>();
-        services.AddHttpClient<INhsApiClient, NhsApiClient>(client => client.BaseAddress = new Uri(config.NhsUrl));
     }
 }
