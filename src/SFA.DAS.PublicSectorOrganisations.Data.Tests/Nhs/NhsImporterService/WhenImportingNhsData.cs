@@ -11,7 +11,7 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
 {
-    public class WhenImportingData
+    public class WhenImportingNhsData
     {
         [Test, MoqAutoData]
         public async Task Then_calls_apis_and_saves_new_records_in_database(

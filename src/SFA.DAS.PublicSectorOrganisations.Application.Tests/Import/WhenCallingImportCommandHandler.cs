@@ -13,12 +13,14 @@ namespace SFA.DAS.PublicSectorOrganisations.Application.Tests.Import
         public async Task Then_NhsImporter_is_called(
             ImportCommand command,
             [Frozen] Mock<INhsImporterService> nhsImporter,
+            [Frozen] Mock<IPoliceImporterService> policeImporter,
             [Greedy] ImportCommandHandler handler
             )
         {
             await handler.Handle(command, CancellationToken.None);
 
             nhsImporter.Verify(x=>x.ImportData(), Times.Once);
+            policeImporter.Verify(x=>x.ImportData(), Times.Once);
         }
     }
 }

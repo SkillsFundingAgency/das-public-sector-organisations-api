@@ -1,15 +1,15 @@
-﻿using AutoFixture.NUnit3;
-using Moq.Protected;
-using Moq;
-using NUnit.Framework;
-using System.Net;
+﻿using System.Net;
+using AutoFixture.NUnit3;
 using FluentAssertions;
+using Moq;
+using Moq.Protected;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 using SFA.DAS.PublicSectorOrganisations.Data.Tests.Helpers;
 using SFA.DAS.PublicSectorOrganisations.Domain.NhsClientResponse;
 
-namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsClient;
+namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsApiClient;
 public class WhenCallingGetOrganisation
 {
     [Test, AutoData]

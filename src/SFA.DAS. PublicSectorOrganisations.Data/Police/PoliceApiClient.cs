@@ -2,7 +2,7 @@
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.PoliceApiClientResponse;
 
-namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
+namespace SFA.DAS.PublicSectorOrganisations.Data.Police;
 
 public class PoliceApiClient : IPoliceApiClient
 {
