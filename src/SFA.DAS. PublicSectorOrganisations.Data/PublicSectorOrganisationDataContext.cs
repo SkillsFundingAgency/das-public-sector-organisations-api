@@ -45,7 +45,6 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
     {
         optionsBuilder.UseLazyLoadingProxies();
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-        optionsBuilder.EnableSensitiveDataLogging();
 
         if (_configuration == null 
             || _environmentConfiguration.EnvironmentName.Equals("DEV", StringComparison.CurrentCultureIgnoreCase)
