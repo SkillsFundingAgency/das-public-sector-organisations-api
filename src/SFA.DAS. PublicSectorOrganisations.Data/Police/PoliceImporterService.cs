@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
@@ -26,47 +27,46 @@ public class PoliceImporterService : IPoliceImporterService
         var newRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
         var updateRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
 
-        var nhsList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Police);
-
-        await FetchNewAndExistingDetails(nhsList, updateRecords, newRecords);
+        await FetchNewAndExistingDetails(updateRecords, newRecords);
 
         await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police, updateRecords, newRecords);
     }
 
-    private async Task FetchNewAndExistingDetails(IReadOnlyCollection<PublicSectorOrganisationEntity> nhsList, ConcurrentBag<PublicSectorOrganisationEntity> updateRecords,
-        ConcurrentBag<PublicSectorOrganisationEntity> newRecords)
+    private async Task FetchNewAndExistingDetails(ConcurrentBag<PublicSectorOrganisationEntity> updateRecords, ConcurrentBag<PublicSectorOrganisationEntity> newRecords)
     {
         try
         {
-            _logger.LogInformation("Collecting Police force details");
+            var policeList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Police);
 
+            _logger.LogInformation("Collecting Police force details");
             var data= await _client.GetAllPoliceForces();
 
             foreach (var item in data)
             {
 
-                var existingEntity = nhsList.FirstOrDefault(x =>
+                var existingEntity = policeList.FirstOrDefault(x =>
                     x.OrganisationCode.Equals(item.Id, StringComparison.InvariantCultureIgnoreCase));
-
-                var record = new PublicSectorOrganisationEntity
-                {
-                    Id = existingEntity == null ? Guid.NewGuid() : existingEntity.Id,
-                    Name = item.Name,
-                    Source = DataSource.Police,
-                    OrganisationCode = item.Id,
-                    Active = true
-                };
 
                 if (existingEntity != null)
                 {
-                    updateRecords.Add(record);
+                    existingEntity.Name = item.Name;
+                    existingEntity.Source = DataSource.Police;
+                    existingEntity.OrganisationCode = item.Id;
+                    existingEntity.Active = true;
+                    updateRecords.Add(existingEntity);
                 }
                 else
                 {
-                    newRecords.Add(record);
+                    newRecords.Add(new PublicSectorOrganisationEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = item.Name,
+                        Source = DataSource.Police,
+                        OrganisationCode = item.Id,
+                        Active = true
+                    });
                 }
             }
-
             _logger.LogInformation("Completed collecting Police force details");
         }
         catch (Exception e)

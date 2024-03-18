@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics.Metrics;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
@@ -32,18 +34,18 @@ public class NhsImporterService : INhsImporterService
         var newRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
         var updateRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
 
-        var nhsList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Nhs);
-
-        await FetchNewAndExistingDetails(data, nhsList, updateRecords, newRecords);
+        await FetchNewAndExistingDetails(data, updateRecords, newRecords);
 
         await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, updateRecords, newRecords);
     }
 
-    private async Task FetchNewAndExistingDetails(ConcurrentBag<OrganisationSummary> data, IReadOnlyCollection<PublicSectorOrganisationEntity> nhsList, ConcurrentBag<PublicSectorOrganisationEntity> updateRecords,
+    private async Task FetchNewAndExistingDetails(ConcurrentBag<OrganisationSummary> data, ConcurrentBag<PublicSectorOrganisationEntity> updateRecords,
         ConcurrentBag<PublicSectorOrganisationEntity> newRecords)
     {
         try
         {
+            var nhsList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Nhs);
+
             _logger.LogInformation("Collecting NHS Details for each Organisation");
             await Parallel.ForEachAsync(data, async (item, ct) =>
             {
@@ -51,29 +53,39 @@ public class NhsImporterService : INhsImporterService
                 var existingEntity = nhsList.FirstOrDefault(x =>
                     x.OrganisationCode.Equals(item.OrgId, StringComparison.InvariantCultureIgnoreCase));
 
-                var record = new PublicSectorOrganisationEntity
-                {
-                    Id = existingEntity == null ? Guid.NewGuid() : existingEntity.Id,
-                    Name = item.Name,
-                    Source = DataSource.Nhs,
-                    AddressLine1 = detail.AddressLine1,
-                    AddressLine2 = detail.AddressLine2,
-                    AddressLine3 = detail.AddressLine3,
-                    Town = detail.Town,
-                    PostCode = detail.PostCode,
-                    Country = detail.Country,
-                    UPRN = detail.UPRN,
-                    OrganisationCode = item.OrgId,
-                    Active = true
-                };
-
                 if (existingEntity != null)
                 {
-                    updateRecords.Add(record);
+                    existingEntity.Name = item.Name;
+                    existingEntity.Source = DataSource.Nhs;
+                    existingEntity.AddressLine1 = detail.AddressLine1;
+                    existingEntity.AddressLine2 = detail.AddressLine2;
+                    existingEntity.AddressLine3 = detail.AddressLine3;
+                    existingEntity.Town = detail.Town;
+                    existingEntity.PostCode = detail.PostCode;
+                    existingEntity.Country = detail.Country;
+                    existingEntity.UPRN = detail.UPRN;
+                    existingEntity.OrganisationCode = item.OrgId;
+                    existingEntity.Active = true;
+
+                    updateRecords.Add(existingEntity);
                 }
                 else
                 {
-                    newRecords.Add(record);
+                    newRecords.Add(new PublicSectorOrganisationEntity
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = item.Name,
+                        Source = DataSource.Nhs,
+                        AddressLine1 = detail.AddressLine1,
+                        AddressLine2 = detail.AddressLine2,
+                        AddressLine3 = detail.AddressLine3,
+                        Town = detail.Town,
+                        PostCode = detail.PostCode,
+                        Country = detail.Country,
+                        UPRN = detail.UPRN,
+                        OrganisationCode = item.OrgId,
+                        Active = true
+                    });
                 }
             });
             _logger.LogInformation("Completed collecting NHS Details for each Organisation");
