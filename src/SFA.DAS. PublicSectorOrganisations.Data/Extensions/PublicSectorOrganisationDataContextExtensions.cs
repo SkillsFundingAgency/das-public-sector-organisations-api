@@ -40,22 +40,22 @@ public static class PublicSectorOrganisationDataContextExtensions
         }
     }
 
-    public static async Task ResetActiveToFalseForSource(this PublicSectorOrganisationDataContext dbContext, DataSource source)
-    {
-        if (IsInMemoryDatabase(dbContext))
-        {
-            //Note: This is done here as the InMemory and SQLLite Dbs do not process the new functionality 'ExecuteUpdateAsync' correctly
-            foreach (var entity in dbContext.PublicSectorOrganisationEntities.Where(x => x.Source == source))
-            {
-                entity.Active = false;
-            }
-        }
-        else
-        {
-            await dbContext.PublicSectorOrganisationEntities.Where(x => x.Source == source)
-                .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
-        }
-    }
+    //public static async Task ResetActiveToFalseForSource(this PublicSectorOrganisationDataContext dbContext, DataSource source)
+    //{
+    //    if (IsInMemoryDatabase(dbContext))
+    //    {
+    //        //Note: This is done here as the InMemory and SQLLite Dbs do not process the new functionality 'ExecuteUpdateAsync' correctly
+    //        foreach (var entity in dbContext.PublicSectorOrganisationEntities.Where(x => x.Source == source))
+    //        {
+    //            entity.Active = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        await dbContext.PublicSectorOrganisationEntities.Where(x => x.Source == source)
+    //            .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
+    //    }
+    //}
     private static bool IsInMemoryDatabase(DbContext dbContext)
     {
         return dbContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory", StringComparison.OrdinalIgnoreCase);

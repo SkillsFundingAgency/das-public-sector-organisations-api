@@ -12,7 +12,8 @@ public class PublicSectorOrganisationEntity
     public string? PostCode { get; set; }
     public string? Country { get; set; }
     public string? UPRN { get; set; }
-    public string OrganisationCode { get; set; }
+    public string? OrganisationCode { get; set; }
+    public string? OnsSector { get; set; }
     public bool Active { get; set; }
 
 }

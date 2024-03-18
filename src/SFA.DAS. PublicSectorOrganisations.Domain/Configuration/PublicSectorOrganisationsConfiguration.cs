@@ -5,6 +5,8 @@ public class PublicSectorOrganisationsConfiguration
     public string ConnectionString { get; set; }
 
     public string PoliceForceUrl { get; set; }
+    public string OnsUrl { get; set; }
+    public string OnsUrlDateFormat { get; set; }
     public string NhsUrl { get; set; }
     public NhsSector[] NhsSectors { get; set; } = Array.Empty<NhsSector>();
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
@@ -11,28 +10,34 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
     private readonly Lazy<PublicSectorOrganisationDataContext> _dbContext;
     private readonly ILogger<PublicSectorOrganisationRepository> _logger;
 
-    public PublicSectorOrganisationRepository(Lazy<PublicSectorOrganisationDataContext> dbContext, ILogger<PublicSectorOrganisationRepository> logger)
+    public PublicSectorOrganisationRepository(Lazy<PublicSectorOrganisationDataContext> dbContext,
+        ILogger<PublicSectorOrganisationRepository> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
     }
+
     public Task<List<PublicSectorOrganisationEntity>> GetPublicSectorOrganisationsFor(DataSource dataSource)
     {
-        return _dbContext.Value.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource).AsNoTracking().ToListAsync();
+        _logger.LogInformation("Getting organisations for {source}", dataSource);
+        var db = _dbContext.Value;
+        return db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource).ToListAsync();
     }
 
-    public async Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource, ConcurrentBag<PublicSectorOrganisationEntity> toUpdate, ConcurrentBag<PublicSectorOrganisationEntity> toAdd)
+    public async Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource,
+        IEnumerable<PublicSectorOrganisationEntity> updates, IEnumerable<PublicSectorOrganisationEntity> adds)
     {
         var db = _dbContext.Value;
         await db.ExecuteInATransaction(async () =>
         {
-            _logger.LogInformation("Updating {existingCount} and adding {newCount} NHS Organisations", toUpdate.Count, toAdd.Count);
-            await db.PublicSectorOrganisationEntities.Where(x => x.Source == DataSource.Nhs)
+            var toUpdate = updates.ToList();
+            var toAdd = adds.ToList();
+            _logger.LogInformation("Updating {existingCount} and adding {newCount} for data source '{source}'",
+                toUpdate.Count, toAdd.Count, dataSource);
+            await db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource)
                 .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
-            await db.PublicSectorOrganisationEntities.AddRangeAsync(toAdd);
             db.PublicSectorOrganisationEntities.UpdateRange(toUpdate);
-
+            await db.PublicSectorOrganisationEntities.AddRangeAsync(toAdd);
         });
     }
 }
-

@@ -9,7 +9,8 @@ CREATE TABLE dbo.[PublicSectorOrganisation] (
     [PostCode]			nvarchar(8)		    NULL,
     [Country]   	    nvarchar(150)	    NULL,
     [UPRN]	            nvarchar(20)		NULL,
-    [OrganisationCode]	nvarchar(20)		NULL,
+    [OrganisationCode]	nvarchar(50)		NULL,
+    [OnsSector]	        nvarchar(100)		NULL,
     [Active]	        bit         		NOT NULL,
     CONSTRAINT [PK_PublicSectorOrganisation_Id] PRIMARY KEY (Id),
     INDEX [IX_PublicSectorOrganisation_Name] NONCLUSTERED(Name)
