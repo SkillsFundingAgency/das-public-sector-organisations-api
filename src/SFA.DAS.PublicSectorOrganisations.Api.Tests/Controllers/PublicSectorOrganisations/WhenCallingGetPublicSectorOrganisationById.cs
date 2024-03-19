@@ -15,8 +15,7 @@ public class WhenCallingGetPublicSectorOrganisationById
 {
     [Test, MoqAutoData]
     public async Task And_when_no_match_found_Then_controller_returns_NotFound(
-        Guid id,
-        PublicSectorOrganisationsController controller)
+        Guid id)
     {
         var mediatorMock = new Mock<IMediator>();
 
