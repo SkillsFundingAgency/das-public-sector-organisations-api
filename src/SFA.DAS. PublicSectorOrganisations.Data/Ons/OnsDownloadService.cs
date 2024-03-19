@@ -22,7 +22,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
             var workingFolder = Path.GetTempPath();
             var fileName = "publicsectorclassificationguidelatest";
 
-            var maxHistoricFileAttempts = 12; // change to go back 1 year. Last file without prior to change was June 2023
+            var maxHistoricFileAttempts = 4;
             var attempt = 0;
             var downloadSuccess = false;
 
