@@ -1,9 +1,9 @@
-﻿namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.GetAllPublicSectorOrganisations;
+﻿namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.GetMatchingPublicSectorOrganisations;
 
 
-public class GetAllPublicSectorOrganisationsResponse
+public class GetMatchingPublicSectorOrganisationsResponse
 {
-    public GetAllPublicSectorOrganisationsResponse(PublicSectorOrganisation[] publicSectorOrganisations)
+    public GetMatchingPublicSectorOrganisationsResponse(PublicSectorOrganisation[] publicSectorOrganisations)
     {
         PublicSectorOrganisations = publicSectorOrganisations;
     }

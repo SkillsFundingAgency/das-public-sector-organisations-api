@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.PublicSectorOrganisations.Application.Queries.GetAllPublicSectorOrganisations;
+using SFA.DAS.PublicSectorOrganisations.Application.Queries.GetMatchingPublicSectorOrganisations;
 using SFA.DAS.PublicSectorOrganisations.Application.Queries.GetPublicSectorOrganisationById;
 
 namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
@@ -30,13 +30,14 @@ namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetMatches([FromQuery] string? searchTerm)
         {
-            var response = await _mediator.Send(new GetAllPublicSectorOrganisationsQuery());
+            var response = await _mediator.Send(new GetMatchingPublicSectorOrganisationsQuery
+            {
+                SearchTerm = searchTerm
+            });
 
             return new OkObjectResult(response);
         }
-
-
     }
 }

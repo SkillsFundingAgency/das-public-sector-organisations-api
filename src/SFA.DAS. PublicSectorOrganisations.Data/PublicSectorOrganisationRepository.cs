@@ -31,6 +31,14 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
         return db.PublicSectorOrganisationEntities.Where(x => x.Active == true).OrderBy(x => x.Name).ToListAsync();
     }
 
+    public Task<List<PublicSectorOrganisationEntity>> GetMatchingActivePublicSectorOrganisations(string search)
+    {
+        _logger.LogInformation("Getting matches organisations");
+        var db = _dbContext.Value;
+        return db.PublicSectorOrganisationEntities.Where(x => x.Active == true && EF.Functions.Like(x.Name, $"%{search}%"))
+            .OrderBy(x => x.Name).ToListAsync();
+    }
+
     public Task<PublicSectorOrganisationEntity?> GetPublicSectorOrganisationById(Guid id)
     {
         _logger.LogInformation("Getting organisations by id {id}", id);
