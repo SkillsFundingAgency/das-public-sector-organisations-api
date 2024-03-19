@@ -36,7 +36,7 @@ public class PoliceImporterService : IPoliceImporterService
     {
         try
         {
-            var policeList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Police);
+            var policeList = await _dbRepository.GetPublicSectorOrganisationsForDataSource(DataSource.Police);
 
             _logger.LogInformation("Collecting Police force details");
             var data= await _client.GetAllPoliceForces();

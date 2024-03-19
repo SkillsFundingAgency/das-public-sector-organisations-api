@@ -44,7 +44,7 @@ public class NhsImporterService : INhsImporterService
     {
         try
         {
-            var nhsList = await _dbRepository.GetPublicSectorOrganisationsFor(DataSource.Nhs);
+            var nhsList = await _dbRepository.GetPublicSectorOrganisationsForDataSource(DataSource.Nhs);
 
             _logger.LogInformation("Collecting NHS Details for each Organisation");
             await Parallel.ForEachAsync(data, async (item, ct) =>

@@ -23,7 +23,7 @@ public class WhenImportingPoliceData
         policeApiClientMock.Setup(x => x.GetAllPoliceForces()).ReturnsAsync(response);
 
         var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Police)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
+        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Police)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
 
         var sut = new Data.Police.PoliceImporterService(policeApiClientMock.Object,dbRepositoryMock.Object, logger);
         await sut.ImportData();
@@ -48,7 +48,7 @@ public class WhenImportingPoliceData
         policeApiClientMock.Setup(x => x.GetAllPoliceForces()).ReturnsAsync(response);
 
         var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Police))
+        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Police))
             .ReturnsAsync(new List<PublicSectorOrganisationEntity>
             {
                 new PublicSectorOrganisationEntity

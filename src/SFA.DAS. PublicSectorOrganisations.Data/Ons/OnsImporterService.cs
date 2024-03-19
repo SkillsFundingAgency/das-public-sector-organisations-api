@@ -41,7 +41,7 @@ public class OnsImporterService : IOnsImporterService
     {
 
         _logger.LogInformation("Sorting ONS Details");
-        var onsList = await _publicSectorOrganisationRepository.GetPublicSectorOrganisationsFor(DataSource.Ons);
+        var onsList = await _publicSectorOrganisationRepository.GetPublicSectorOrganisationsForDataSource(DataSource.Ons);
 
         foreach (var item in importedOnsList.Where(x =>
                      x.EsaCode != null && !x.EsaCode.Equals("Disbanded or Deleted Entity",

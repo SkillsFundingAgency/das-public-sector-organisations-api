@@ -1,6 +1,6 @@
-﻿namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.ById;
+﻿namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.GetPublicSectorOrganisationById;
 
-public class GetByIdResponse
+public class GetPublicSectorOrganisationByIdResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

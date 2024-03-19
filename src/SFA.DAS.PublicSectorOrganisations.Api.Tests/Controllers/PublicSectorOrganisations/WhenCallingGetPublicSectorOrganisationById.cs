@@ -7,7 +7,7 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.PublicSectorOrganisations.Api.Controllers;
 using SFA.DAS.PublicSectorOrganisations.Application.Commands.Import;
-using SFA.DAS.PublicSectorOrganisations.Application.Queries.ById;
+using SFA.DAS.PublicSectorOrganisations.Application.Queries.GetPublicSectorOrganisationById;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.PublicSectorOrganisations.Api.Tests.Controllers.PublicSectorOrganisations;
@@ -27,10 +27,10 @@ public class WhenCallingGetPublicSectorOrganisationById
 
     [Test, MoqAutoData]
     public async Task And_match_found_then_controller_returns_Ok_and_result(
-        GetByIdResponse response)
+        GetPublicSectorOrganisationByIdResponse response)
     {
         var mediatorMock = new Mock<IMediator>();
-        mediatorMock.Setup(x => x.Send(It.Is<GetByIdQuery>(p => p.Id == response.Id), It.IsAny<CancellationToken>())).ReturnsAsync(response);
+        mediatorMock.Setup(x => x.Send(It.Is<GetPublicSectorOrganisationByIdQuery>(p => p.Id == response.Id), It.IsAny<CancellationToken>())).ReturnsAsync(response);
 
 
         var sut = new PublicSectorOrganisationsController(mediatorMock.Object);

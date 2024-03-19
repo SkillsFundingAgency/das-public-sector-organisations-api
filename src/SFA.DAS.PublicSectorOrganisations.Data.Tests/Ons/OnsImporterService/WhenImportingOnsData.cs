@@ -26,7 +26,7 @@ public class WhenImportingOnsData
         onsExcelReaderServiceMock.Setup(x => x.GetOnsDataFromSpreadsheet(filename)).Returns(excelData);
 
         var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Ons)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
+        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Ons)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
 
         var sut = new Data.Ons.OnsImporterService(onsDownloadServiceMock.Object, onsExcelReaderServiceMock.Object, dbRepositoryMock.Object, logger);
         await sut.ImportData();
@@ -56,7 +56,7 @@ public class WhenImportingOnsData
         onsExcelReaderServiceMock.Setup(x => x.GetOnsDataFromSpreadsheet(filename)).Returns(excelData);
 
         var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Ons))
+        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Ons))
             .ReturnsAsync(new List<PublicSectorOrganisationEntity>
             {
                 new PublicSectorOrganisationEntity
@@ -99,7 +99,7 @@ public class WhenImportingOnsData
         onsExcelReaderServiceMock.Setup(x => x.GetOnsDataFromSpreadsheet(filename)).Returns(new List<OnsExcelDetail> { excelData });
 
         var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Ons)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
+        dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Ons)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
 
         var sut = new Data.Ons.OnsImporterService(onsDownloadServiceMock.Object, onsExcelReaderServiceMock.Object, dbRepositoryMock.Object, logger);
         await sut.ImportData();

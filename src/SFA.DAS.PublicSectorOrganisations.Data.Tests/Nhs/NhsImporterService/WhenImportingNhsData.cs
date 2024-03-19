@@ -36,7 +36,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             SetupDetailResponsesForSummary(nhsClientMock, response2, organisationsForResponse2);
 
             var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-            dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Nhs)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
+            dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Nhs)).ReturnsAsync(new List<PublicSectorOrganisationEntity>());
 
             var sut = new Data.Nhs.NhsImporterService(nhsClientMock.Object, config, dbRepositoryMock.Object, logger);
             await sut.ImportData();
@@ -77,7 +77,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             SetupDetailResponsesForSummary(nhsClientMock, response2, organisationsForResponse2);
 
             var dbRepositoryMock = new Mock<IPublicSectorOrganisationRepository>();
-            dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsFor(DataSource.Nhs)).ReturnsAsync(SetupExistingDataAsExisting(response2));
+            dbRepositoryMock.Setup(x => x.GetPublicSectorOrganisationsForDataSource(DataSource.Nhs)).ReturnsAsync(SetupExistingDataAsExisting(response2));
 
             var sut = new Data.Nhs.NhsImporterService(nhsClientMock.Object, config, dbRepositoryMock.Object, logger);
             await sut.ImportData();

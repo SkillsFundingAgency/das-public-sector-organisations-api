@@ -1,17 +1,15 @@
 ﻿using MediatR;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
-namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.ById;
+namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.GetAllPublicSectorOrganisations;
 
-public class GetByIdQueryHandler(IPublicSectorOrganisationRepository repository) : IRequestHandler<GetByIdQuery, GetByIdResponse?>
+public class GetAllPublicSectorOrganisationsQueryHandler(IPublicSectorOrganisationRepository repository) : IRequestHandler<GetAllPublicSectorOrganisationsQuery, GetAllPublicSectorOrganisationsResponse>
 {
-    public async Task<GetByIdResponse?> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetAllPublicSectorOrganisationsResponse> Handle(GetAllPublicSectorOrganisationsQuery request, CancellationToken cancellationToken)
     {
-        var organisation = await repository.GetPublicSectorOrganisationById(request.Id);
-        if(organisation == null)
-            return null;
+        var organisations = await repository.GetAllActivePublicSectorOrganisations();
 
-        return new GetByIdResponse
+        return new GetAllPublicSectorOrganisationsResponse(organisations.Select(organisation => new PublicSectorOrganisation
         {
             Id = organisation.Id.Value,
             Name = organisation.Name,
@@ -26,6 +24,6 @@ public class GetByIdQueryHandler(IPublicSectorOrganisationRepository repository)
             OrganisationCode = organisation.OrganisationCode,
             OnsSector = organisation.OnsSector,
             Active = organisation.Active
-        };
+        }).ToArray());
     }
 }

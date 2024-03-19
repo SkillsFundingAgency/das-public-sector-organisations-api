@@ -17,11 +17,18 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
         _logger = logger;
     }
 
-    public Task<List<PublicSectorOrganisationEntity>> GetPublicSectorOrganisationsFor(DataSource dataSource)
+    public Task<List<PublicSectorOrganisationEntity>> GetPublicSectorOrganisationsForDataSource(DataSource dataSource)
     {
         _logger.LogInformation("Getting organisations for {source}", dataSource);
         var db = _dbContext.Value;
-        return db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource).ToListAsync();
+        return db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource).OrderBy(x=>x.Name).ToListAsync();
+    }
+
+    public Task<List<PublicSectorOrganisationEntity>> GetAllActivePublicSectorOrganisations()
+    {
+        _logger.LogInformation("Getting all organisations");
+        var db = _dbContext.Value;
+        return db.PublicSectorOrganisationEntities.Where(x => x.Active == true).OrderBy(x => x.Name).ToListAsync();
     }
 
     public Task<PublicSectorOrganisationEntity?> GetPublicSectorOrganisationById(Guid id)
