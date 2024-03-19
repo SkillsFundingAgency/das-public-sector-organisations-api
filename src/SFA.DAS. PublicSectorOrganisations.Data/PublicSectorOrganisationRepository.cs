@@ -24,6 +24,13 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
         return db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource).ToListAsync();
     }
 
+    public Task<PublicSectorOrganisationEntity?> GetPublicSectorOrganisationById(Guid id)
+    {
+        _logger.LogInformation("Getting organisations by id {id}", id);
+        var db = _dbContext.Value;
+        return db.PublicSectorOrganisationEntities.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource,
         IEnumerable<PublicSectorOrganisationEntity> updates, IEnumerable<PublicSectorOrganisationEntity> adds)
     {
