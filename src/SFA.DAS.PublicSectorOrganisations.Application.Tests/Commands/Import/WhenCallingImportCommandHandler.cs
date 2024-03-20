@@ -5,7 +5,7 @@ using SFA.DAS.PublicSectorOrganisations.Application.Commands.Import;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 
-namespace SFA.DAS.PublicSectorOrganisations.Application.Tests.Import
+namespace SFA.DAS.PublicSectorOrganisations.Application.Tests.Commands.Import
 {
     public class WhenCallingImportCommandHandler
     {
@@ -19,8 +19,8 @@ namespace SFA.DAS.PublicSectorOrganisations.Application.Tests.Import
         {
             await handler.Handle(command, CancellationToken.None);
 
-            nhsImporter.Verify(x=>x.ImportData(), Times.Once);
-            policeImporter.Verify(x=>x.ImportData(), Times.Once);
+            nhsImporter.Verify(x => x.ImportData(), Times.Once);
+            policeImporter.Verify(x => x.ImportData(), Times.Once);
         }
     }
 }

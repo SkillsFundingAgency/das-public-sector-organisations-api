@@ -4,8 +4,15 @@ using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Application.Queries.GetMatchingPublicSectorOrganisations;
 
-public class GetMatchingPublicSectorOrganisationsHandler(IPublicSectorOrganisationRepository repository) : IRequestHandler<GetMatchingPublicSectorOrganisationsQuery, GetMatchingPublicSectorOrganisationsResponse>
+public class GetMatchingPublicSectorOrganisationsHandler : IRequestHandler<GetMatchingPublicSectorOrganisationsQuery, GetMatchingPublicSectorOrganisationsResponse>
 {
+    private readonly IPublicSectorOrganisationRepository _repository;
+
+    public GetMatchingPublicSectorOrganisationsHandler(IPublicSectorOrganisationRepository repository)
+    {
+        _repository = repository;
+    }
+
     public async Task<GetMatchingPublicSectorOrganisationsResponse> Handle(
         GetMatchingPublicSectorOrganisationsQuery request, CancellationToken cancellationToken)
     {
@@ -13,11 +20,11 @@ public class GetMatchingPublicSectorOrganisationsHandler(IPublicSectorOrganisati
 
         if (string.IsNullOrWhiteSpace(request.SearchTerm))
         {
-            organisations = await repository.GetAllActivePublicSectorOrganisations();
+            organisations = await _repository.GetAllActivePublicSectorOrganisations();
         }
         else
         {
-            organisations = await repository.GetMatchingActivePublicSectorOrganisations(request.SearchTerm);
+            organisations = await _repository.GetMatchingActivePublicSectorOrganisations(request.SearchTerm);
         }
         
         return new GetMatchingPublicSectorOrganisationsResponse(organisations.Select(organisation => new PublicSectorOrganisation
