@@ -10,7 +10,7 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Ons.OnsImporterService;
 
-public class WhenImportingOnsData
+public class WhenCreatingExcelFileFromDownload
 {
     [Test, MoqAutoData]
     public async Task Then_calls_apis_and_saves_new_records_in_database(

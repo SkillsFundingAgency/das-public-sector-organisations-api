@@ -26,4 +26,10 @@
     <ProjectReference Include="..\SFA.DAS. PublicSectorOrganisations.Data\SFA.DAS.PublicSectorOrganisations.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\pscgjan2024Test.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -22,7 +22,7 @@ public class WhenCallingGetAllOrganisations
             Content = new StringContent(JsonConvert.SerializeObject(responseFromApi)),
             StatusCode = HttpStatusCode.OK
         };
-        var httpMessageHandler = MessageHandlerHelper.SetupMessageHandlerMock(getResponse, baseUrl, "GET");
+        var httpMessageHandler = MessageHandlerHelper.SetupMessageHandlerMock(getResponse, "GET");
         var httpClient = new HttpClient(httpMessageHandler.Object)
         {
             BaseAddress = new Uri(baseUrl)

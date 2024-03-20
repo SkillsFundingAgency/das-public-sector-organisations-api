@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
+using SFA.DAS.PublicSectorOrganisations.Domain.Exceptions;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
 {
@@ -9,10 +10,12 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
         private readonly IOnsDownloadClient _client;
         private readonly PublicSectorOrganisationsConfiguration _configuration;
         private readonly ILogger<OnsDownloadService> _logger;
+        private readonly DateTime _startDateTime;
 
-        public OnsDownloadService(IOnsDownloadClient client, PublicSectorOrganisationsConfiguration configuration, ILogger<OnsDownloadService> logger)
+        public OnsDownloadService(IOnsDownloadClient client, IDateTimeProvider dateTimeProvider, PublicSectorOrganisationsConfiguration configuration, ILogger<OnsDownloadService> logger)
         {
             _client = client;
+            _startDateTime = dateTimeProvider.UtcNow;
             _configuration = configuration;
             _logger = logger;
         }
@@ -41,7 +44,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
             {
                 const string errorMessage = "Failed to download ONS from current and previous month, potential URL format change";
                 _logger.LogError(errorMessage);
-                throw new Exception(errorMessage);
+                throw new DownloadingExcelFileException(errorMessage);
             }
 
             return Path.Combine(workingFolder, fileName);
@@ -59,13 +62,21 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogError(new Exception($"Status code {response.StatusCode} returned"), $"Status code {response.StatusCode} returned");
+                    _logger.LogError("Status code {statusCode} returned", response.StatusCode);
                     return false;
                 }
 
-                await using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
-                await using Stream streamToWriteTo = File.Open(filenameAndPath, FileMode.Create, FileAccess.ReadWrite);
-                await streamToReadFrom.CopyToAsync(streamToWriteTo);
+                try
+                {
+                    await using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
+                    await using Stream streamToWriteTo =
+                        File.Open(filenameAndPath, FileMode.Create, FileAccess.ReadWrite);
+                    await streamToReadFrom.CopyToAsync(streamToWriteTo);
+                }
+                catch (Exception ex)
+                {
+                    throw new DownloadingExcelFileException("Problem extracting Excel file into Temp", ex);
+                }
             }
             _logger.LogInformation("Download complete");
             return true;
@@ -76,7 +87,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
             var urlpattern = _configuration.OnsUrl;
             var datePattern = _configuration.OnsUrlDateFormat;
 
-            var now = DateTime.UtcNow.AddMonths(-minusMonths);
+            var now = _startDateTime.AddMonths(-minusMonths);
 
             var url = string.Format(urlpattern, now.ToString(datePattern).ToLower());
             return url;

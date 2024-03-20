@@ -5,7 +5,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Helpers;
 
 public static class MessageHandlerHelper
 {
-    public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string baseUrl, string httpMethod = "get")
+    public static Mock<HttpMessageHandler> SetupMessageHandlerMock(HttpResponseMessage response, string httpMethod = "get")
     {
         var method = HttpMethod.Get;
         if (httpMethod.Equals("get", StringComparison.CurrentCultureIgnoreCase))
@@ -35,7 +35,6 @@ public static class MessageHandlerHelper
                 "SendAsync",
                 ItExpr.Is<HttpRequestMessage>(c =>
                     c.Method.Equals(method)
-                    //&& c.RequestUri.AbsoluteUri.Equals(baseUrl)
                     ),
                 ItExpr.IsAny<CancellationToken>()
             )

@@ -3,6 +3,7 @@ using SFA.DAS.PublicSectorOrganisations.Data;
 using SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 using SFA.DAS.PublicSectorOrganisations.Data.Ons;
 using SFA.DAS.PublicSectorOrganisations.Data.Police;
+using SFA.DAS.PublicSectorOrganisations.Data.Providers;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 
@@ -22,5 +23,6 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<INhsApiClient, NhsApiClient>(client => client.BaseAddress = new Uri(config.NhsUrl));
         services.AddTransient<INhsImporterService, NhsImporterService>();
         services.AddTransient<IPublicSectorOrganisationRepository, PublicSectorOrganisationRepository>();
+        services.AddTransient<IDateTimeProvider, DateTimeProvider>();
     }
 }
