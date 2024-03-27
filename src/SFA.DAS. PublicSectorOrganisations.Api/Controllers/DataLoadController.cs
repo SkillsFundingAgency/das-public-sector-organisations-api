@@ -5,7 +5,7 @@ using SFA.DAS.PublicSectorOrganisations.Application.Commands.Import;
 namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
 {
     [ApiVersion("1.0")]
-    [ApiController]
+    [Controller]
     [Route("/dataload")]
     public class DataLoadController : Controller
     {

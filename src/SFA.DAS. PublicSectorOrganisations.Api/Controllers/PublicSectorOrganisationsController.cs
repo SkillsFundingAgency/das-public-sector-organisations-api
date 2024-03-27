@@ -6,7 +6,7 @@ using SFA.DAS.PublicSectorOrganisations.Application.Queries.GetPublicSectorOrgan
 namespace SFA.DAS.PublicSectorOrganisations.Api.Controllers
 {
     [ApiVersion("1.0")]
-    [ApiController]
+    [Controller]
     [Route("/PublicSectorOrganisations")]
     public class PublicSectorOrganisationsController : Controller
     {

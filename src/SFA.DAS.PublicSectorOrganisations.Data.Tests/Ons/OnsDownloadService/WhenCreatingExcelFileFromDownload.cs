@@ -22,7 +22,6 @@ public class WhenCreatingExcelFileFromDownload
             OnsUrlDateFormat = "MMMyyyy"
         };
 
-
         var filename = WhenDownloadingFile.GetFullPathForExcelFile();
         byte[] data = File.ReadAllBytes(filename);
 
@@ -50,7 +49,6 @@ public class WhenCreatingExcelFileFromDownload
             Mock.Of<ILogger<Data.Ons.OnsDownloadService>>());
 
         var filePath = await sut.CreateLatestOnsExcelFile();
-
         filePath.EndsWith("publicsectorclassificationguidelatest").Should().BeTrue();
     }
 

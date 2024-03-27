@@ -39,5 +39,4 @@ public class WhenCallingGetPublicSectorOrganisationById
         result.StatusCode.Should().Be((int)HttpStatusCode.OK);
         result.Value.Should().BeEquivalentTo(response);
     }
-
 }
