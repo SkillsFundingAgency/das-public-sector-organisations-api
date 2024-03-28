@@ -14,14 +14,14 @@ public static class AddServiceRegistrationExtension
     public static void AddServiceRegistration(this IServiceCollection services, PublicSectorOrganisationsConfiguration config)
     {
         services.AddMediatR(configuration => configuration.RegisterServicesFromAssembly(typeof(ImportCommand).Assembly));
+        services.AddTransient<IImporterService, PoliceImporterService>();
+        services.AddTransient<IImporterService, NhsImporterService>();
+        services.AddTransient<IImporterService, OnsImporterService>();
         services.AddHttpClient<IPoliceApiClient, PoliceApiClient>(client => client.BaseAddress = new Uri(config.PoliceForceUrl));
-        services.AddTransient<IPoliceImporterService, PoliceImporterService>();
-        services.AddTransient<IOnsImporterService, OnsImporterService>();
         services.AddTransient<IOnsDownloadService, OnsDownloadService>();
         services.AddHttpClient<IOnsDownloadClient, OnsDownloadClient>();
         services.AddTransient<IOnsExcelReaderService, OnsExcelReaderService>();
         services.AddHttpClient<INhsApiClient, NhsApiClient>(client => client.BaseAddress = new Uri(config.NhsUrl));
-        services.AddTransient<INhsImporterService, NhsImporterService>();
         services.AddTransient<IPublicSectorOrganisationRepository, PublicSectorOrganisationRepository>();
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();
     }
