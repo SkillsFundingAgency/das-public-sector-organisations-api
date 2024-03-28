@@ -78,7 +78,6 @@ public class WhenCreatingExcelFileFromDownload
         var testDate = new DateTime(2024, 03, 20);
         var dateTimeProviderMock = new Mock<IDateTimeProvider>();
         dateTimeProviderMock.Setup(x => x.UtcNow).Returns(testDate);
-        var foundUrl = string.Format(config.OnsUrl, testDate.AddMonths(-2).ToString(config.OnsUrlDateFormat).ToLower());
 
         var onsDownloadClientMock = new Mock<IOnsDownloadClient>();
         onsDownloadClientMock.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(getNotFoundResponse);
@@ -91,7 +90,7 @@ public class WhenCreatingExcelFileFromDownload
                 
             Assert.Fail("Exception expected but nothing thrown");
         }
-        catch (DownloadingExcelFileException ex)
+        catch (DownloadingExcelFileException)
         {
 
         }

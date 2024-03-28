@@ -25,7 +25,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
                 conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
 
                 cmd.CommandText = "SELECT [Name], [Sector Classification],[ESA 2010 Code] FROM [" + sheetName +
-                                  "A5:C] WHERE [Name] IS NOT NULL "; 
+                                  "A6:C] WHERE [Name] IS NOT NULL "; 
 
                 var dt = new DataTable(sheetName);
                 var da = new OleDbDataAdapter(cmd);

@@ -4,7 +4,7 @@ using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 using SFA.DAS.PublicSectorOrganisations.Domain.PoliceApiClientResponse;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Ons;
-public class OnsImporterService : IOnsImporterService
+public class OnsImporterService : IImporterService
 {
     private readonly IOnsDownloadService _onsDownloadService;
     private readonly IOnsExcelReaderService _onsExcelReaderService;

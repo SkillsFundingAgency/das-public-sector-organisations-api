@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Police;
 
-public class PoliceImporterService : IPoliceImporterService
+public class PoliceImporterService : IImporterService
 
 {
     private readonly IPoliceApiClient _client;

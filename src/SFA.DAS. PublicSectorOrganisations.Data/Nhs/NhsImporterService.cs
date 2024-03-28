@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics.Metrics;
+﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
@@ -9,7 +7,7 @@ using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
 
 namespace SFA.DAS.PublicSectorOrganisations.Data.Nhs;
 
-public class NhsImporterService : INhsImporterService
+public class NhsImporterService : IImporterService
 {
     private readonly INhsApiClient _apiClient;
     private readonly IPublicSectorOrganisationRepository _dbRepository;
