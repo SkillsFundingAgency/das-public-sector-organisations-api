@@ -29,13 +29,13 @@ public class WhenImportingPoliceData
         await sut.ImportData();
 
         dbRepositoryMock.Verify(x=>x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police, 
-            It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>()));
+            It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>(), It.IsAny<DateTime>()));
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police, It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>(),
             It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p => p.Count == 3 &&
                                                                       VerifyMappedRecordHasExpectedValues(p, response[0]) &&
                                                                       VerifyMappedRecordHasExpectedValues(p, response[1]) &&
-                                                                      VerifyMappedRecordHasExpectedValues(p, response[2]))));
+                                                                      VerifyMappedRecordHasExpectedValues(p, response[2])), It.IsAny<DateTime>()));
     }
 
     [Test, MoqAutoData]
@@ -64,14 +64,14 @@ public class WhenImportingPoliceData
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police,
             It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p => p.Count == 1), 
-            It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 2)));
+            It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 2), It.IsAny<DateTime>()));
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police,
             It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p =>
                 VerifyMappedRecordHasExpectedValues(p, response[0])),
             It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p =>
                 VerifyMappedRecordHasExpectedValues(p, response[1]) &&
-                VerifyMappedRecordHasExpectedValues(p, response[2]))));
+                VerifyMappedRecordHasExpectedValues(p, response[2])), It.IsAny<DateTime>()));
     }
 
     private bool VerifyMappedRecordHasExpectedValues(ConcurrentBag<PublicSectorOrganisationEntity> records, PoliceForce detail)

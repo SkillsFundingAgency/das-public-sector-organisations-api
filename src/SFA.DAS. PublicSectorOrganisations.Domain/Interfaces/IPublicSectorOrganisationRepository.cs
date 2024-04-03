@@ -7,5 +7,5 @@ public interface IPublicSectorOrganisationRepository
     Task<List<PublicSectorOrganisationEntity>> GetAllActivePublicSectorOrganisations();
     Task<List<PublicSectorOrganisationEntity>> GetMatchingActivePublicSectorOrganisations(string search);
     Task<PublicSectorOrganisationEntity?> GetPublicSectorOrganisationById(Guid id);
-    Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource, IEnumerable<PublicSectorOrganisationEntity> toUpdate, IEnumerable<PublicSectorOrganisationEntity> toAdd);
+    Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource, IEnumerable<PublicSectorOrganisationEntity> toUpdate, IEnumerable<PublicSectorOrganisationEntity> toAdd, DateTime startTime);
 }

@@ -27,6 +27,7 @@ public class NhsImporterService : IImporterService
 
     public async Task ImportData()
     {
+        var startedOn = DateTime.UtcNow;
         var data = await FetchSectorSummaries();
 
         var newRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
@@ -34,7 +35,7 @@ public class NhsImporterService : IImporterService
 
         await FetchNewAndExistingDetails(data, updateRecords, newRecords);
 
-        await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, updateRecords, newRecords);
+        await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, updateRecords, newRecords, startedOn);
     }
 
     private async Task FetchNewAndExistingDetails(ConcurrentBag<OrganisationSummary> data, ConcurrentBag<PublicSectorOrganisationEntity> updateRecords,

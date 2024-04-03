@@ -25,6 +25,7 @@ public class OnsImporterService : IImporterService
 
     public async Task ImportData()
     {
+        var startedOn = DateTime.UtcNow;
         var newRecords = new List<PublicSectorOrganisationEntity>();
         var updateRecords = new List<PublicSectorOrganisationEntity>();
 
@@ -34,12 +35,11 @@ public class OnsImporterService : IImporterService
 
         await CreateNewAndExistingDetailsFromImportedList(importedOnsList, updateRecords, newRecords);
 
-        await _publicSectorOrganisationRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons, updateRecords, newRecords);
+        await _publicSectorOrganisationRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons, updateRecords, newRecords, startedOn);
     }
 
     private async Task CreateNewAndExistingDetailsFromImportedList(List<OnsExcelDetail> importedOnsList, List<PublicSectorOrganisationEntity> updateRecords, List<PublicSectorOrganisationEntity> newRecords)
     {
-
         _logger.LogInformation("Sorting ONS Details");
         var onsList = await _publicSectorOrganisationRepository.GetPublicSectorOrganisationsForDataSource(DataSource.Ons);
 

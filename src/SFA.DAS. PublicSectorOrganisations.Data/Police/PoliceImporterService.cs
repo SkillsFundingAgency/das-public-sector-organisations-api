@@ -23,12 +23,13 @@ public class PoliceImporterService : IImporterService
 
     public async Task ImportData()
     {
+        var startedOn = DateTime.UtcNow;
         var newRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
         var updateRecords = new ConcurrentBag<PublicSectorOrganisationEntity>();
 
         await FetchNewAndExistingDetails(updateRecords, newRecords);
 
-        await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police, updateRecords, newRecords);
+        await _dbRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Police, updateRecords, newRecords, startedOn);
     }
 
     private async Task FetchNewAndExistingDetails(ConcurrentBag<PublicSectorOrganisationEntity> updateRecords, ConcurrentBag<PublicSectorOrganisationEntity> newRecords)

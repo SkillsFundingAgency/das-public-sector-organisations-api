@@ -32,13 +32,13 @@ public class WhenCreatingExcelFileFromDownload
         await sut.ImportData();
 
         dbRepositoryMock.Verify(x=>x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons, 
-            It.Is<List<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<List<PublicSectorOrganisationEntity>>()));
+            It.Is<List<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<List<PublicSectorOrganisationEntity>>(), It.IsAny<DateTime>()));
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons, It.IsAny<List<PublicSectorOrganisationEntity>>(),
             It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 3 &&
                                                                       VerifyMappedRecordHasExpectedValues(p, excelData[0]) &&
                                                                       VerifyMappedRecordHasExpectedValues(p, excelData[1]) &&
-                                                                      VerifyMappedRecordHasExpectedValues(p, excelData[2]))));
+                                                                      VerifyMappedRecordHasExpectedValues(p, excelData[2])), It.IsAny<DateTime>()));
     }
 
     [Test, MoqAutoData]
@@ -72,14 +72,14 @@ public class WhenCreatingExcelFileFromDownload
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons,
             It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 1),
-            It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 2)));
+            It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 2), It.IsAny<DateTime>()));
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons,
             It.Is<List<PublicSectorOrganisationEntity>>(p =>
                 VerifyMappedRecordHasExpectedValues(p, excelData[0])),
             It.Is<List<PublicSectorOrganisationEntity>>(p =>
                 VerifyMappedRecordHasExpectedValues(p, excelData[1]) &&
-                VerifyMappedRecordHasExpectedValues(p, excelData[2]))));
+                VerifyMappedRecordHasExpectedValues(p, excelData[2])), It.IsAny<DateTime>()));
     }
 
     [Test, MoqAutoData]
@@ -106,7 +106,7 @@ public class WhenCreatingExcelFileFromDownload
 
         dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons,
             It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 0),
-            It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 0)));
+            It.Is<List<PublicSectorOrganisationEntity>>(p => p.Count == 0), It.IsAny<DateTime>()));
 
     }
 

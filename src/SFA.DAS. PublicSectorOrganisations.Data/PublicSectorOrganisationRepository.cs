@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.PublicSectorOrganisations.Domain.Interfaces;
 using SFA.DAS.PublicSectorOrganisations.Domain.PublicSectorOrganisation;
@@ -46,8 +47,7 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
         return db.PublicSectorOrganisationEntities.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource,
-        IEnumerable<PublicSectorOrganisationEntity> updates, IEnumerable<PublicSectorOrganisationEntity> adds)
+    public async Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource, IEnumerable<PublicSectorOrganisationEntity> updates, IEnumerable<PublicSectorOrganisationEntity> adds, DateTime startTime)
     {
         var db = _dbContext.Value;
         await db.ExecuteInATransaction(async () =>
@@ -60,6 +60,20 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
                 .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
             db.PublicSectorOrganisationEntities.UpdateRange(toUpdate);
             await db.PublicSectorOrganisationEntities.AddRangeAsync(toAdd);
+            await AddAuditRecord(dataSource, toUpdate.Count, toAdd.Count, startTime);
+        });
+    }
+
+    private async Task AddAuditRecord(DataSource dataSource, long updateCount, long addCount, DateTime startTime)
+    {
+        var finishTime = DateTime.UtcNow;
+        await _dbContext.Value.ImportAuditEntities.AddAsync(new ImportAuditEntity
+        {
+            TimeStarted = startTime,
+            TimeFinished = finishTime,
+            RowsAdded = addCount,
+            RowsUpdated = updateCount,
+            Source = dataSource
         });
     }
 }

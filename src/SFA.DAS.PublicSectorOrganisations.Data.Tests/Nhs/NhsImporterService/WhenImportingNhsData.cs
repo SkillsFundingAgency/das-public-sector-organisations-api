@@ -42,7 +42,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
             await sut.ImportData();
 
             dbRepositoryMock.Verify(x=>x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, 
-                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>()));
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=>p.Count == 0), It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>(), It.IsAny<DateTime>()));
 
             dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs, It.IsAny<ConcurrentBag<PublicSectorOrganisationEntity>>(),
                 It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p => p.Count == 6 &&
@@ -51,7 +51,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
                                                                           VerifyMappedRecordHasExpectedValues(p, response1.Organisations[2], organisationsForResponse1[2]) &&
                                                                           VerifyMappedRecordHasExpectedValues(p, response2.Organisations[0], organisationsForResponse2[0]) &&
                                                                           VerifyMappedRecordHasExpectedValues(p, response2.Organisations[1], organisationsForResponse2[1]) &&
-                                                                          VerifyMappedRecordHasExpectedValues(p, response2.Organisations[2], organisationsForResponse2[2]))));
+                                                                          VerifyMappedRecordHasExpectedValues(p, response2.Organisations[2], organisationsForResponse2[2])), It.IsAny<DateTime>()));
         }
 
         [Test, MoqAutoData]
@@ -84,7 +84,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
 
             dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs,
                 It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p => p.Count == 3), 
-                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=> p.Count == 3)));
+                It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p=> p.Count == 3), It.IsAny<DateTime>()));
 
             dbRepositoryMock.Verify(x => x.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Nhs,
                 It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p =>
@@ -94,7 +94,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Tests.Nhs.NhsImporterService
                 It.Is<ConcurrentBag<PublicSectorOrganisationEntity>>(p =>
                     VerifyMappedRecordHasExpectedValues(p, response1.Organisations[0], organisationsForResponse1[0]) &&
                     VerifyMappedRecordHasExpectedValues(p, response1.Organisations[1], organisationsForResponse1[1]) &&
-                    VerifyMappedRecordHasExpectedValues(p, response1.Organisations[2], organisationsForResponse1[2]))));
+                    VerifyMappedRecordHasExpectedValues(p, response1.Organisations[2], organisationsForResponse1[2])), It.IsAny<DateTime>()));
         }
 
         private List<PublicSectorOrganisationEntity> SetupExistingDataAsExisting(GetAllOrganisationsResponse response2)

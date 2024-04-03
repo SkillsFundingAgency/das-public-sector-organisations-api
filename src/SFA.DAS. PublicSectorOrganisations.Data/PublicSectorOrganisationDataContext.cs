@@ -24,6 +24,7 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
     private readonly EnvironmentConfiguration _environmentConfiguration;
 
     public DbSet<PublicSectorOrganisationEntity> PublicSectorOrganisationEntities { get; set; }
+    public DbSet<ImportAuditEntity> ImportAuditEntities { get; set; }
 
     private readonly PublicSectorOrganisationsConfiguration? _configuration;
 
@@ -70,6 +71,7 @@ public class PublicSectorOrganisationDataContext : DbContext, IPublicSectorOrgan
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new PublicSectorOrganisationEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new ImportAuditEntityConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }
