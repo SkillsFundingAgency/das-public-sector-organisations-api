@@ -20,6 +20,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="SFA.DAS.Testing.AutoFixture" Version="3.0.169" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
