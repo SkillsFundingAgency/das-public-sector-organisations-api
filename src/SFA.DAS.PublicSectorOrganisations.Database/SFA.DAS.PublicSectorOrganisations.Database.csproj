@@ -4,9 +4,4 @@
         <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAureV12DatabaseSchemaProvider</DSP>
         <SqlServerVersion>SqlAzure</SqlServerVersion>
     </PropertyGroup>
-    <ItemGroup>
-        <None Include="Database.publish.xml">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
 </Project>
