@@ -50,17 +50,21 @@ public class PublicSectorOrganisationRepository : IPublicSectorOrganisationRepos
     public async Task UpdateAndAddPublicSectorOrganisationsFor(DataSource dataSource, IEnumerable<PublicSectorOrganisationEntity> updates, IEnumerable<PublicSectorOrganisationEntity> adds, DateTime startTime)
     {
         var db = _dbContext.Value;
-        await db.ExecuteInATransaction(async () =>
+
+        await db.Database.CreateExecutionStrategy().ExecuteAsync(async () =>
         {
-            var toUpdate = updates.ToList();
-            var toAdd = adds.ToList();
-            _logger.LogInformation("Updating {existingCount} and adding {newCount} for data source '{source}'",
-                toUpdate.Count, toAdd.Count, dataSource);
-            await db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource)
-                .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
-            db.PublicSectorOrganisationEntities.UpdateRange(toUpdate);
-            await db.PublicSectorOrganisationEntities.AddRangeAsync(toAdd);
-            await AddAuditRecord(dataSource, toUpdate.Count, toAdd.Count, startTime);
+            await db.ExecuteInATransaction(async () =>
+            {
+                var toUpdate = updates.ToList();
+                var toAdd = adds.ToList();
+                _logger.LogInformation("Updating {existingCount} and adding {newCount} for data source '{source}'",
+                    toUpdate.Count, toAdd.Count, dataSource);
+                await db.PublicSectorOrganisationEntities.Where(x => x.Source == dataSource)
+                    .ExecuteUpdateAsync(x => x.SetProperty(x => x.Active, false));
+                db.PublicSectorOrganisationEntities.UpdateRange(toUpdate);
+                await db.PublicSectorOrganisationEntities.AddRangeAsync(toAdd);
+                await AddAuditRecord(dataSource, toUpdate.Count, toAdd.Count, startTime);
+            });
         });
     }
 
