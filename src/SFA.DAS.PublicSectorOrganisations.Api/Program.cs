@@ -36,18 +36,18 @@ if (!rootConfiguration.IsDev())
         .AddDbContextCheck<PublicSectorOrganisationDataContext>();
 }
 
-if (!rootConfiguration.IsLocalOrDev())
-{
-    var azureAdConfiguration = rootConfiguration
-        .GetSection("AzureAd")
-        .Get<AzureActiveDirectoryConfiguration>();
+//if (!rootConfiguration.IsLocalOrDev())
+//{
+//    var azureAdConfiguration = rootConfiguration
+//        .GetSection("AzureAd")
+//        .Get<AzureActiveDirectoryConfiguration>();
 
-    var policies = new Dictionary<string, string>
-    {
-        {PolicyNames.Default, RoleNames.Default},
-    };
-    builder.Services.AddAuthentication(azureAdConfiguration, policies);
-}
+//    var policies = new Dictionary<string, string>
+//    {
+//        {PolicyNames.Default, RoleNames.Default},
+//    };
+//    builder.Services.AddAuthentication(azureAdConfiguration, policies);
+//}
 
 builder.Services.AddControllers(o =>
 {
