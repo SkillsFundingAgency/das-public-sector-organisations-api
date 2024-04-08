@@ -53,7 +53,7 @@ builder.Services.AddControllers(o =>
 {
     if (!rootConfiguration.IsLocalOrDev())
     {
-        o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+        //o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
     }
 }).AddJsonOptions(options =>
 {
