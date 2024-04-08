@@ -89,7 +89,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
 if (!app.Configuration.IsDev())
 {
@@ -97,7 +97,7 @@ if (!app.Configuration.IsDev())
 }
 
 app.UseRouting();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
