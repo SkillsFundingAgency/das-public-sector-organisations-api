@@ -36,24 +36,24 @@ if (!rootConfiguration.IsDev())
         .AddDbContextCheck<PublicSectorOrganisationDataContext>();
 }
 
-//if (!rootConfiguration.IsLocalOrDev())
-//{
-//    var azureAdConfiguration = rootConfiguration
-//        .GetSection("AzureAd")
-//        .Get<AzureActiveDirectoryConfiguration>();
+if (!rootConfiguration.IsLocalOrDev())
+{
+    var azureAdConfiguration = rootConfiguration
+        .GetSection("AzureAd")
+        .Get<AzureActiveDirectoryConfiguration>();
 
-//    var policies = new Dictionary<string, string>
-//    {
-//        {PolicyNames.Default, RoleNames.Default},
-//    };
-//    builder.Services.AddAuthentication(azureAdConfiguration, policies);
-//}
+    var policies = new Dictionary<string, string>
+    {
+        {PolicyNames.Default, RoleNames.Default},
+    };
+    builder.Services.AddAuthentication(azureAdConfiguration, policies);
+}
 
 builder.Services.AddControllers(o =>
 {
     if (!rootConfiguration.IsLocalOrDev())
     {
-        //o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+        o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
     }
 }).AddJsonOptions(options =>
 {
@@ -89,7 +89,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
 if (!app.Configuration.IsDev())
 {
@@ -97,7 +97,7 @@ if (!app.Configuration.IsDev())
 }
 
 app.UseRouting();
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
