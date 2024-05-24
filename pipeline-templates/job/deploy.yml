@@ -7,7 +7,7 @@ parameters:
 jobs:
 - deployment: DeployWebApp
   pool:
-    name: DAS - Continuous Deployment Agents
+    name: DAS - Continuous Deployment Beta
   environment: ${{ parameters.Environment }}
   strategy:
     runOnce:
@@ -27,7 +27,7 @@ jobs:
             BackEndAccessRestrictionsExcludedSubnets: $(BackEndAccessRestrictionsExcludedSubnets)
             ResourceEnvironmentName: $(ResourceEnvironmentName)
             UnrestrictedEnvironments: $(UnrestrictedEnvironments)
-            UptimeMonitoringAccessRestrictions: $(UptimeMonitoringAccessRestrictions)    
+            UptimeMonitoringAccessRestrictions: $(UptimeMonitoringAccessRestrictions)
         - template: azure-pipelines-templates/deploy/step/arm-deploy.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
