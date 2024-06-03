@@ -14,11 +14,11 @@ jobs:
   - template: azure-pipelines-templates/build/step/gitversion.yml@das-platform-building-blocks
 
   - task: UseDotNet@2
-        displayName: Use .NET Core SDK 8.0 Preview
-        inputs:
-          packageType: 'sdk'
-          version: '8.0.x'
-          includePreviewVersions: true
+    displayName: Use .NET Core SDK 8.0 Preview
+    inputs:
+      packageType: 'sdk'
+      version: '8.0.x'
+      includePreviewVersions: true
 
   - template: azure-pipelines-templates/build/step/app-build.yml@das-platform-building-blocks
 
