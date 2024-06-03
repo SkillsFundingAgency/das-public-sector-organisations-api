@@ -14,10 +14,10 @@ jobs:
   - template: azure-pipelines-templates/build/step/gitversion.yml@das-platform-building-blocks
 
   - task: UseDotNet@2
-    displayName: Use .NET Core SDK 7.x
+    displayName: Use .NET Core SDK 7.0.x
     inputs:
       packageType: 'sdk'
-      version: '7.x.x'
+      version: '7.0.x'
 
   - template: azure-pipelines-templates/build/step/app-build.yml@das-platform-building-blocks
 
