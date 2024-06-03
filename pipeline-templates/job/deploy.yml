@@ -13,8 +13,6 @@ jobs:
     runOnce:
       deploy:
         steps:
-        - script: printenv
-          displayName: 'Print environment variables'
         - template: azure-pipelines-templates/deploy/step/wait-azure-devops-deployment.yml@das-platform-building-blocks
           parameters:
             ServiceConnection: ${{ parameters.ServiceConnection }}
