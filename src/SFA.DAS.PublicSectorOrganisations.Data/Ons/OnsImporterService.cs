@@ -25,17 +25,28 @@ public class OnsImporterService : IImporterService
 
     public async Task ImportData()
     {
-        var startedOn = DateTime.UtcNow;
-        var newRecords = new List<PublicSectorOrganisationEntity>();
-        var updateRecords = new List<PublicSectorOrganisationEntity>();
+        try
+        {
+            var startedOn = DateTime.UtcNow;
+            var newRecords = new List<PublicSectorOrganisationEntity>();
+            var updateRecords = new List<PublicSectorOrganisationEntity>();
 
+            _logger.LogInformation("Creating Latest ONS Excel File");
+            var filename = await _onsDownloadService.CreateLatestOnsExcelFile();
 
-        var filename = await _onsDownloadService.CreateLatestOnsExcelFile();
-        var importedOnsList = _onsExcelReaderService.GetOnsDataFromSpreadsheet(filename);
+            _logger.LogInformation("Reading ONS Excel File");
+            var importedOnsList = _onsExcelReaderService.GetOnsDataFromSpreadsheet(filename);
 
-        await CreateNewAndExistingDetailsFromImportedList(importedOnsList, updateRecords, newRecords);
+            await CreateNewAndExistingDetailsFromImportedList(importedOnsList, updateRecords, newRecords);
 
-        await _publicSectorOrganisationRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons, updateRecords, newRecords, startedOn);
+            await _publicSectorOrganisationRepository.UpdateAndAddPublicSectorOrganisationsFor(DataSource.Ons,
+                updateRecords, newRecords, startedOn);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e,"Error recorded during ONS import");
+            throw;
+        }
     }
 
     private async Task CreateNewAndExistingDetailsFromImportedList(List<OnsExcelDetail> importedOnsList, List<PublicSectorOrganisationEntity> updateRecords, List<PublicSectorOrganisationEntity> newRecords)
