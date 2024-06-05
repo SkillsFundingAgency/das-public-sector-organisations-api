@@ -5,20 +5,13 @@ parameters:
 jobs:
 - job: CodeBuild
   pool:
-    name: DAS - Continuous Integration Beta
+    name: DAS - Continuous Integration Agents
     workspace:
       clean: all
   variables:
   - group: BUILD Management Resources
   steps:
   - template: azure-pipelines-templates/build/step/gitversion.yml@das-platform-building-blocks
-
-  - task: UseDotNet@2
-    displayName: Use .NET Core SDK 8.0 Preview
-    inputs:
-      packageType: 'sdk'
-      version: '8.0.x'
-      includePreviewVersions: true
 
   - template: azure-pipelines-templates/build/step/app-build.yml@das-platform-building-blocks
 
