@@ -20,7 +20,7 @@ public static class AddServiceRegistrationExtension
         services.AddHttpClient<IPoliceApiClient, PoliceApiClient>(client => client.BaseAddress = new Uri(config.PoliceForceUrl));
         services.AddTransient<IOnsDownloadService, OnsDownloadService>();
         services.AddHttpClient<IOnsDownloadClient, OnsDownloadClient>();
-        services.AddTransient<IOnsExcelReaderService, OnsExcelReaderService>();
+        services.AddTransient<IOnsExcelReaderService, OnsExcelReaderServiceUsingClosedXml>();
         services.AddHttpClient<INhsApiClient, NhsApiClient>(client => client.BaseAddress = new Uri(config.NhsUrl));
         services.AddTransient<IPublicSectorOrganisationRepository, PublicSectorOrganisationRepository>();
         services.AddTransient<IDateTimeProvider, DateTimeProvider>();

@@ -49,7 +49,7 @@ public class WhenCreatingExcelFileFromDownload
             Mock.Of<ILogger<Data.Ons.OnsDownloadService>>());
 
         var filePath = await sut.CreateLatestOnsExcelFile();
-        filePath.EndsWith("publicsectorclassificationguidelatest").Should().BeTrue();
+        filePath.EndsWith("publicsectorclassificationguidelatest.xlsx").Should().BeTrue();
     }
 
     [Test, MoqAutoData]

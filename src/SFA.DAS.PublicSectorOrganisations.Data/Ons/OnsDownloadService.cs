@@ -23,7 +23,7 @@ namespace SFA.DAS.PublicSectorOrganisations.Data.Ons
         public async Task<string> CreateLatestOnsExcelFile()
         {
             var workingFolder = Path.GetTempPath();
-            var fileName = "publicsectorclassificationguidelatest";
+            var fileName = "publicsectorclassificationguidelatest.xlsx";
 
             var maxHistoricFileAttempts = 4;
             var attempt = 0;
