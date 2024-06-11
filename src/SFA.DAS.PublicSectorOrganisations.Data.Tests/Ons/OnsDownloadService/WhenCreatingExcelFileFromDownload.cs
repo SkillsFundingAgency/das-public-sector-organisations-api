@@ -88,20 +88,5 @@ public class WhenCreatingExcelFileFromDownload
         var act = () => sut.CreateLatestOnsExcelFile();
 
         await act.Should().ThrowAsync<DownloadingExcelFileException>();
-
-        //try
-        //{
-        //    await sut.CreateLatestOnsExcelFile();
-                
-        //    Assert.Fail("Exception expected but nothing thrown");
-        //}
-        //catch (DownloadingExcelFileException)
-        //{
-
-        //}
-        //catch (Exception)
-        //{
-        //    Assert.Fail("Unexpected exception");
-        //}
     }
 }
