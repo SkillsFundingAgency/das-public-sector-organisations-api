@@ -38,15 +38,8 @@ public class WhenReadingAnExcelFile
         var sut = new Data.Ons.OnsExcelReaderServiceUsingClosedXml(
             Mock.Of<ILogger<Data.Ons.OnsExcelReaderServiceUsingClosedXml>>());
 
-        try
-        {
-            sut.GetOnsDataFromSpreadsheet(path + @"\Data\pscgjan2024Test.xlsx");
-            Assert.Fail("Should reach here");
+        var act = () => sut.GetOnsDataFromSpreadsheet(path + @"\Data\pscgjan2024Test.xlsx");
 
-        }
-        catch (ReadingOnsExcelFileException ex)
-        {
-            ex.InnerException.Message.Should().Be("Expected column title 'Name' not present");
-        }
+        act.Should().Throw<ReadingOnsExcelFileException>().WithInnerException<Exception>().WithMessage("Expected column title 'Name' not present");
     }
 }

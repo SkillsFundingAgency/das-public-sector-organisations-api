@@ -82,21 +82,26 @@ public class WhenCreatingExcelFileFromDownload
         var onsDownloadClientMock = new Mock<IOnsDownloadClient>();
         onsDownloadClientMock.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync(getNotFoundResponse);
 
-        try
-        {
-            var sut = new Data.Ons.OnsDownloadService(onsDownloadClientMock.Object, dateTimeProviderMock.Object, config,
-                Mock.Of<ILogger<Data.Ons.OnsDownloadService>>());
-            await sut.CreateLatestOnsExcelFile();
-                
-            Assert.Fail("Exception expected but nothing thrown");
-        }
-        catch (DownloadingExcelFileException)
-        {
+        var sut = new Data.Ons.OnsDownloadService(onsDownloadClientMock.Object, dateTimeProviderMock.Object, config,
+            Mock.Of<ILogger<Data.Ons.OnsDownloadService>>());
 
-        }
-        catch (Exception)
-        {
-            Assert.Fail("Unexpected exception");
-        }
+        var act = () => sut.CreateLatestOnsExcelFile();
+
+        await act.Should().ThrowAsync<DownloadingExcelFileException>();
+
+        //try
+        //{
+        //    await sut.CreateLatestOnsExcelFile();
+                
+        //    Assert.Fail("Exception expected but nothing thrown");
+        //}
+        //catch (DownloadingExcelFileException)
+        //{
+
+        //}
+        //catch (Exception)
+        //{
+        //    Assert.Fail("Unexpected exception");
+        //}
     }
 }
