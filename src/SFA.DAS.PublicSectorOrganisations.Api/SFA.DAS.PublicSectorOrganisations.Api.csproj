@@ -7,18 +7,14 @@
         <InvariantGlobalization>false</InvariantGlobalization>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Content Remove="appsettings.Development.json" />
-      <Content Remove="appsettings.json" />
-    </ItemGroup>
 
     <ItemGroup>
-      <None Include="appsettings.Development.json">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </None>
-      <None Include="appsettings.json">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </None>
+      <Content Update="appsettings.json">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </Content>
+      <Content Update="appsettings.Development.json">
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
