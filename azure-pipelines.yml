@@ -112,14 +112,14 @@ stages:
       ServiceConnection: SFA-DIG-PreProd-ARM
       OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss  }}
 
- - stage: Deploy_PROD
-   dependsOn: Build
-   displayName: Deploy to PROD
-   variables:
+- stage: Deploy_PROD
+  dependsOn: Build
+  displayName: Deploy to PROD
+  variables:
    - group: PROD Management Resources
    - group: PROD Shared Resources
    - group: PROD das-public-sector-organisations-api
-   jobs:
+  jobs:
    - template: pipeline-templates/job/deploy.yml
      parameters:
        Environment: PROD
@@ -127,13 +127,13 @@ stages:
        ServiceConnection: SFA-DIG-Prod-ARM
        OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss  }}
 
- - stage: Deploy_MO
-   dependsOn: Build
-   displayName: Deploy to MO
-   variables:
+- stage: Deploy_MO
+  dependsOn: Build
+  displayName: Deploy to MO
+  variables:
    - group: MO Management Resources
    - group: MO Shared Resources
-   jobs:
+  jobs:
    - template: pipeline-templates/job/deploy.yml
      parameters:
        Environment: MO
