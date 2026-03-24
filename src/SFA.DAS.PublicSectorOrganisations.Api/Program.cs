@@ -7,7 +7,6 @@ using SFA.DAS.Api.Common.AppStart;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.PublicSectorOrganisations.Api.AppStart;
-using SFA.DAS.PublicSectorOrganisations.Api.Infrastructure;
 using SFA.DAS.PublicSectorOrganisations.Data;
 using SFA.DAS.PublicSectorOrganisations.Domain.Configuration;
 using SFA.DAS.PublicSectorOrganisations.Domain.Extensions;
@@ -69,7 +68,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "PublicSectorOrganisationsApi", Version = "v1" });
     c.OperationFilter<SwaggerVersionHeaderFilter>();
-    c.DocumentFilter<JsonPatchDocumentFilter>();
 });
 
 builder.Services.AddApiVersioning(opt =>
