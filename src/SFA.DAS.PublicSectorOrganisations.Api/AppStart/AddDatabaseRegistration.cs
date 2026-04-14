@@ -17,10 +17,6 @@ public static class DatabaseExtensions
                 options.UseInMemoryDatabase("SFA.DAS.PublicSectorOrganisations");
             }, ServiceLifetime.Transient);
         }
-        else if (environmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase))
-        {
-            services.AddDbContext<PublicSectorOrganisationDataContext>(options=>options.UseSqlServer(config.ConnectionString),ServiceLifetime.Transient);
-        }
         else
         {
             services.AddDbContext<PublicSectorOrganisationDataContext>(ServiceLifetime.Transient);    
