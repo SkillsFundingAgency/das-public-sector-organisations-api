@@ -15,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var rootConfiguration = builder.Configuration.LoadConfiguration();
 
-builder.Services.AddApplicationInsightsTelemetry(rootConfiguration);
 builder.Services.AddTelemetryRegistration(rootConfiguration);
 
 builder.Services.AddOptions();
